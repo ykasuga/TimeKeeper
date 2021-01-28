@@ -15,11 +15,12 @@ class RedmineEntry(object):
         time_entry.comments = comment
         # time_entry.save()
 
-        # # TODO : Debug
-        # print(
-        #     ticket_number,
-        #     date,
-        #     logged_time,
-        #     activity,
-        #     comment
-        # )
+        # TODO : Debug
+        print(
+            "submit: ",
+            ticket_number,
+            date,
+            logged_time,
+            activity,
+            comment
+        )

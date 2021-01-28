@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+@file main.py
+@author Y. Kasuga
+@date 2021/1/29
+@brief Entry point of TimeKeeper.
+"""
+
 import sys
 import datetime
 
@@ -13,7 +21,15 @@ from redmine_entry import RedmineEntry
 
 
 class MyWindow(QMainWindow):
-    def __init__(self):
+    """
+    @class MyWindow
+    @brief Main window
+    """
+    def __init__(self) -> None:
+        """
+        @fn __init__
+        @brief Constructor of MyWindow class.
+        """
         super().__init__()
         self.title = "TimeKeeper"
         self.width = 700
@@ -25,7 +41,11 @@ class MyWindow(QMainWindow):
         self.optionStruct = self.optionWidget.getOptionStruct()
         self.timeKeeper.setOptionStruct(self.optionStruct)
 
-    def initUI(self):
+    def initUI(self) -> None:
+        """
+        @fn initUI
+        @brief Initialize window, shorcuts, menubar and actions.
+        """
         self.setWindowTitle(self.title)
         self.setGeometry(0, 0, self.width, self.height)
         self.show()
@@ -47,7 +67,11 @@ class MyWindow(QMainWindow):
 
         self.setCentralWidget(self.timeKeeper)
 
-    def openOptionDialog(self):
+    def openOptionDialog(self) -> None:
+        """
+        @fn openOptionDialog
+        @brief Opens option dialog.
+        """
         optionDialog = QDialog()
         optionDialog.setWindowTitle("Option")
         # optionDialog.setWindowModality(Qt.ApplicationModal)
@@ -64,7 +88,15 @@ class MyWindow(QMainWindow):
 
 
 class TimeKeeper(QWidget):
-    def __init__(self):
+    """
+    @class TimeKeeper
+    @brief Main UI to manage time spent on tasks.
+    """
+    def __init__(self) -> None:
+        """
+        @fn __ini__
+        @brief Constructor of TimeKeeper class.
+        """
         super().__init__()
         self.layout = QVBoxLayout()
 
@@ -87,16 +119,32 @@ class TimeKeeper(QWidget):
         self.layout.addWidget(button_remove)
         self.setLayout(self.layout)
 
-    def addNewTaskSet(self):
+    def addNewTaskSet(self) -> None:
+        """
+        @fn addNewTaskSet
+        @brief Add new task line to the window.
+        """
         self.task_list.addNewTask()
 
-    def removeTaskSet(self):
+    def removeTaskSet(self) -> None:
+        """
+        @fn removeTaskSet
+        @brief Remove task line from the window.
+        """
         self.task_list.removeTask()
 
-    def setOptionStruct(self, optionStruct):
+    def setOptionStruct(self, optionStruct) -> None:
+        """
+        @fn setOptionStruct
+        @brief Assign option parameters.
+        """
         self.optionStruct = optionStruct
 
-    def _submitTaskList(self):
+    def _submitTaskList(self) -> None:
+        """
+        @fn _submitTaskList
+        @brief Submit tasks to the tickets at the end of the day.
+        """
         self.task_list.submit(self.optionStruct)
 
         dialog = QMessageBox()
@@ -106,7 +154,15 @@ class TimeKeeper(QWidget):
 
 
 class TaskList(QWidget):
-    def __init__(self):
+    """
+    @class TaskList
+    @brief Data set to contain the list of tasks and times spent.
+    """
+    def __init__(self) -> None:
+        """
+        @fn __init__
+        @brief Constructor of TaskList class.
+        """
         super().__init__()
 
         self.task_log_list = TaskLogList()
@@ -136,7 +192,11 @@ class TaskList(QWidget):
         # Debug
         self._setSample()
 
-    def _setTaskRow(self, row=0):
+    def _setTaskRow(self, row:int=0) -> None:
+        """
+        @fn _setTaskRow
+        @brief Generate a new task line in UI.
+        """
         # Start Time
         dateTimeEdit = QDateTimeEdit()
         dateTimeEdit.setDisplayFormat("h:m")
@@ -152,16 +212,29 @@ class TaskList(QWidget):
         comboBox.setFrame(False)
         self.task_table.setCellWidget(row, 2, comboBox)
 
-    def addNewTask(self, num=1):
+    def addNewTask(self, num:int=1) -> None:
+        """
+        @fn addNewTask()
+        @brief Add new task line.
+        """
         self.task_table.setRowCount(self.task_table.rowCount() + num)
         self._setTaskRow(self.task_table.rowCount() - 1)
         self._calculateDuration()
 
-    def removeTask(self, num=1):
+    def removeTask(self, num:int=1) -> None:
+        """
+        @fn removeTask()
+        @brief Remove task line.
+        """
         self.task_table.setRowCount(self.task_table.rowCount() - num)
         self._calculateDuration()
 
-    def submit(self, optionStruct):
+    def submit(self, optionStruct:OptionStruct) -> None:
+        """
+        @fn submit()
+        @brief Submit logged time to the tickets.
+        @param optionStruct Specify username, password and today's date.
+        """
         num_tasks = self.task_table.rowCount()
         self.task_log_list.clear()
 
@@ -199,7 +272,11 @@ class TaskList(QWidget):
         # self.task_log_list.show_tasks()
         # self.task_log_list.show_tasks_sorted()
 
-    def _calculateDuration(self):
+    def _calculateDuration(self) -> None:
+        """
+        @fn _calculateDuration()
+        @brief Calculate duration of each tasks.
+        """
         for n in range(self.task_table.rowCount()-1):
             item = QTableWidgetItem()
             item.setFlags(QtCore.Qt.ItemIsEditable)
@@ -213,7 +290,11 @@ class TaskList(QWidget):
             item.setText(str(duration))
             self.task_table.setItem(n, 1, item)
 
-    def _setSample(self):
+    def _setSample(self) -> None:
+        """
+        @fn _setSample()
+        @brief Set examples of task list for debugging.
+        """
         for _ in range(3):
             self.addNewTask()
         
@@ -230,7 +311,12 @@ class TaskList(QWidget):
             self.task_table.setItem(n, 4, item)
 
 
-def main():
+def main() -> None:
+    """
+    @fn main
+    @brief Entry point of the program.
+    @return None
+    """
     app = QApplication(sys.argv)
     timeKeeper = MyWindow()
     # timeKeeper.show()

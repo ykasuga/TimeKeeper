@@ -2,7 +2,20 @@ import datetime
 
 
 class TaskLog():
+    """
+    @class TaskLog
+    @brief Set of parameters of a task
+    """
     def __init__(self, id, start_time, ticket_number=0, comment="EndOfDay"):
+        """
+        @fn __init__
+        @brief Constructor of TaskLog class
+        @param id Identification number of the task
+        @param start_time When the task began
+        @param ticket_number Ticket id to log the task. Default=0.
+        @param comment Comment of the ticket. Default="EndOfDay".
+        @return None
+        """
         self.id = id
         self._start_time = start_time
         self.logged_time = 0
@@ -47,12 +60,24 @@ class TaskLog():
 
     #=== Functions ===    
     def show(self, message_callback=print):
+        """
+        @fn show
+        @brief Show the parameters of the task.
+        @param message_callback Specify the way to output.
+        @return None
+        """
         message_callback("{} : {} {} {} {}".format(self.id,
             self.start_time.strftime("%Y-%m-%d %H:%M:%S"),
             self.logged_time, self.ticket_number, self.comment
             ))
 
     def is_end_of_day(self):
+        """
+        @fn is_end_of_day
+        @brief Returns if this task is the end of a day.
+        @detail If _ticket_number equals 0, the task is recognized as the end of a day.
+        @return Wheather this task is the end of a day.
+        """
         return self._ticket_number == 0
 
     def submit_log(self):

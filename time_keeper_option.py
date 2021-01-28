@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+@file time_keeper_option.py
+@author Y. Kasuga
+@date 2021/1/29
+@brief Option of TimeKeeper.
+"""
+
 import os
 
 from PyQt5.QtCore import pyqtSignal
@@ -8,7 +16,15 @@ from PyQt5.QtCore import QDateTime
 
 
 class OptionStruct(object):
-    def __init__(self):
+    """
+    @class OptionStruct
+    @brief Option parameters.
+    """
+    def __init__(self) -> None:
+        """
+        @fn __init__()
+        @brief Constructor of OptionStruct class.
+        """
         self.username = ""
         self.password = ""
         self.today = QDateTime()
@@ -16,6 +32,9 @@ class OptionStruct(object):
 
 class TimeKeeperOption(QWidget):
     """
+    @class TimeKeeperOption
+    @brief Option parameters for TimeKeeper.
+    @note
     TODO :
         userfolder
         username
@@ -25,7 +44,11 @@ class TimeKeeperOption(QWidget):
     """
     closed = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        @fn __init__()
+        @brief Constructor on TimeKeeperOption class.
+        """
         super().__init__()
         self.userfolder = ""
         self.savefile = "C:\\Users\\y-kas\\Desktop\\TimeKeeperOption.txt"
@@ -36,7 +59,11 @@ class TimeKeeperOption(QWidget):
 
         self._loadOption()
 
-    def _initUI(self):
+    def _initUI(self) -> None:
+        """
+        @fn _initUI()
+        @brief Initialize UI of option dialog.
+        """
         # # Userfolder
         # self.button_userfolder = QPushButton("Select")
         # self.button_userfolder.clicked.connect(lambda: self._selectUserfolder())
@@ -67,7 +94,12 @@ class TimeKeeperOption(QWidget):
         self.close_button.clicked.connect(self._closeEvent)
         self.layout_options.addWidget(self.close_button)
 
-    def getOptionStruct(self):
+    def getOptionStruct(self) -> OptionStruct:
+        """
+        @fn getOptionStruct()
+        @breif Getter.
+        @return optionStruct A structure of option parameters.
+        """
         optionStruct = OptionStruct()
 
         optionStruct.username = self.edit_username.text()
