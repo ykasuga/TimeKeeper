@@ -67,8 +67,6 @@ class TimeKeeper(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
-        # self.layout = QGridLayout()
-        # self.layout_labels = QHBoxLayout()
 
         button = QPushButton("Add New Task")
         button.clicked.connect(lambda: self.addNewTaskSet())
@@ -97,7 +95,6 @@ class TimeKeeper(QWidget):
 
     def setOptionStruct(self, optionStruct):
         self.optionStruct = optionStruct
-        print(self.optionStruct.username)
 
     def _submitTaskList(self):
         self.task_list.submit(self.optionStruct)
@@ -198,10 +195,9 @@ class TaskList(QWidget):
                 task.comment
             )
 
-        # Debug
-        # print(starttime, ticket, comment)
-        self.task_log_list.show_tasks()
-        self.task_log_list.show_tasks_sorted()
+        # # Debug
+        # self.task_log_list.show_tasks()
+        # self.task_log_list.show_tasks_sorted()
 
     def _calculateDuration(self):
         for n in range(self.task_table.rowCount()-1):
@@ -223,7 +219,7 @@ class TaskList(QWidget):
         
         for n in range(self.task_table.rowCount()):
             widget = self.task_table.cellWidget(n, 0)
-            widget.setDateTime(datetime.datetime(2020, 10, 26, 9+n, 0, 0))
+            widget.setDateTime(datetime.datetime(2020, 11, 17, 9+n, 0, 0))
 
             widget2 = self.task_table.cellWidget(n, 2)
             widget2.setCurrentIndex(n % 3 + 1)

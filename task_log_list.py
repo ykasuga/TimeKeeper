@@ -7,7 +7,7 @@ class TaskLog():
         self._start_time = start_time
         self.logged_time = 0
         self._ticket_number = ticket_number
-        self.activity_id = 5
+        self.activity_id = 1
         self._comment = comment
 
     def __lt__(self, other):

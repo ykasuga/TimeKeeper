@@ -37,11 +37,11 @@ class TimeKeeperOption(QWidget):
         self._loadOption()
 
     def _initUI(self):
-        # Userfolder
-        self.button_userfolder = QPushButton("Select")
-        self.button_userfolder.clicked.connect(lambda: self._selectUserfolder())
-        self.edit_userfolder = QLineEdit(self)
-        self.layout_options.addRow(self.button_userfolder, self.edit_userfolder)
+        # # Userfolder
+        # self.button_userfolder = QPushButton("Select")
+        # self.button_userfolder.clicked.connect(lambda: self._selectUserfolder())
+        # self.edit_userfolder = QLineEdit(self)
+        # self.layout_options.addRow(self.button_userfolder, self.edit_userfolder)
 
         # Username
         self.label_username = QLabel("Username")
@@ -83,7 +83,7 @@ class TimeKeeperOption(QWidget):
     def _selectUserfolder(self):
         fileDialog = QFileDialog()
         self.userfolder = fileDialog.getExistingDirectory()
-        self.edit_userfolder.setText(self.userfolder)
+        # self.edit_userfolder.setText(self.userfolder)
 
     def _loadOption(self):
         lines = []
@@ -96,7 +96,7 @@ class TimeKeeperOption(QWidget):
             username = lines[1]
             password = lines[2]
         
-        self.edit_userfolder.setText(self.userfolder)
+        # self.edit_userfolder.setText(self.userfolder)
         self.edit_username.setText(username)
         self.edit_password.setText(password)
 
