@@ -108,16 +108,28 @@ class TimeKeeperOption(QWidget):
 
         return optionStruct
 
-    def _closeEvent(self):
+    def _closeEvent(self) -> None:
+        """
+        @fn _closeEvent
+        @brief Save option parameters and close dialog.
+        """
         self._saveOption()
         self.closed.emit()
 
-    def _selectUserfolder(self):
+    def _selectUserfolder(self) -> None:
+        """
+        @fn _selectUserfolder
+        @brief Let user to select userfolder.
+        """
         fileDialog = QFileDialog()
         self.userfolder = fileDialog.getExistingDirectory()
         # self.edit_userfolder.setText(self.userfolder)
 
-    def _loadOption(self):
+    def _loadOption(self) -> None:
+        """
+        @fn _loadOption
+        @brief Load option parameters from the savefile.
+        """
         lines = []
         username = ""
         password = ""
@@ -132,7 +144,11 @@ class TimeKeeperOption(QWidget):
         self.edit_username.setText(username)
         self.edit_password.setText(password)
 
-    def _saveOption(self):
+    def _saveOption(self) -> None:
+        """
+        @fn _saveOption
+        @brief Save option parameters from the savefile.
+        """
         with open(self.savefile, "w") as f:
             f.write(self.userfolder + "\n")
             f.write(self.edit_username.text() + "\n")

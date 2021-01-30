@@ -1,3 +1,11 @@
+# -*- coding: utf-8 -*-
+"""
+@file task_log_list.py
+@author Y. Kasuga
+@date 2021/1/30
+@brief Definition of TaskLog class and TaskLogList class.
+"""
+
 import datetime
 
 
@@ -6,7 +14,7 @@ class TaskLog():
     @class TaskLog
     @brief Set of parameters of a task
     """
-    def __init__(self, id, start_time, ticket_number=0, comment="EndOfDay"):
+    def __init__(self, id, start_time, ticket_number=0, comment="EndOfDay") -> None:
         """
         @fn __init__
         @brief Constructor of TaskLog class
@@ -23,43 +31,43 @@ class TaskLog():
         self.activity_id = 1
         self._comment = comment
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         return self.ticket_number < other.ticket_number
-    # def __le__(self, other):
+    # def __le__(self, other) -> bool:
     #     return self.ticket_number <= other.ticket_number
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.ticket_number == other.ticket_number and self.comment == other.comment
-    # def __ne__(self, other):
+    # def __ne__(self, other) -> bool:
     #     return self.ticket_number != other.ticket_number
-    # def __gt__(self, other):
+    # def __gt__(self, other) -> bool:
     #     return self.ticket_number > other.ticket_number
-    # def __ge__(self, other):
+    # def __ge__(self, other) -> bool:
     #     return self.ticket_number >= other.ticket_number
 
     #=== Properties ===
     @property
-    def start_time(self):
+    def start_time(self) -> datetime:
         return self._start_time
 
     # @start_time.setter
 
     @property
-    def ticket_number(self):
+    def ticket_number(self) -> int:
         return self._ticket_number
 
     # @ticket_number.setter
 
     @property
-    def comment(self):
+    def comment(self) -> str:
         return self._comment
 
     @comment.setter
-    def comment(self, comment):
+    def comment(self, comment) -> None:
         if self._ticket_number:
             self._comment = comment
 
     #=== Functions ===    
-    def show(self, message_callback=print):
+    def show(self, message_callback=print) -> None:
         """
         @fn show
         @brief Show the parameters of the task.
@@ -71,7 +79,7 @@ class TaskLog():
             self.logged_time, self.ticket_number, self.comment
             ))
 
-    def is_end_of_day(self):
+    def is_end_of_day(self) -> bool:
         """
         @fn is_end_of_day
         @brief Returns if this task is the end of a day.
@@ -80,11 +88,20 @@ class TaskLog():
         """
         return self._ticket_number == 0
 
-    def submit_log(self):
-        # submit task log to the ticket
+    def submit_log(self) -> None:
+        """
+        @fn submit_log
+        @brief Submit task log to the ticket.
+        @note TODO not implemented
+        """
         pass
 
-    def merge(self, other_task):
+    def merge(self, other_task) -> bool:
+        """
+        @fn merge
+        @brief Merge with other task.
+        @return Succeeded or not.
+        """
         if not self == other_task:
             return False
 
@@ -93,11 +110,22 @@ class TaskLog():
 
 
 class TaskLogList():
-    def __init__(self):
+    def __init__(self) -> None:
+        """
+        @fn __init__
+        @brief Constructor of TaskLogList class.
+        """
         self.tasks = []
         self.tasks_sorted = []
 
-    def append_new(self, start_time, ticket_number, comment):
+    def append_new(self, start_time, ticket_number, comment) -> bool:
+        """
+        @fn append_new
+        @brief Append new task log to the list.
+        @detail To append new task, the day should be open 
+                and star time of the new task should be latter than the last task.
+        @return Succeeded or not.
+        """
         if self.is_day_closed():
             print("The day is already closed")
             return False
@@ -112,7 +140,12 @@ class TaskLogList():
         self.tasks.append(TaskLog(len(self.tasks), start_time, ticket_number, comment))
         return True
 
-    def insert_new(self, start_time, ticket_number, comment):
+    def insert_new(self, start_time, ticket_number, comment) -> bool:
+        """
+        @fn insert_new
+        @brief Insert new task before existing tasks.
+        @return Succeeded or not.
+        """
         if self.is_day_closed():
             print("The day is already closed")
             return False
@@ -121,7 +154,12 @@ class TaskLogList():
         self.tasks = sorted(self.tasks, key=lambda task: task.start_time)
         return True
 
-    def remove_task(self, task_id):
+    def remove_task(self, task_id) -> bool:
+        """
+        @fn remove_task
+        @brief Remove an existing task.
+        @return Suceeded or not
+        """
         if self.is_day_closed():
             print("The day is already closed")
             return False
@@ -130,8 +168,17 @@ class TaskLogList():
             del self.tasks[task_id]
         else:
             print("task_id out of range")
+            return False
+        
+        return True
 
-    def close_day(self, time):
+    def close_day(self, time) -> bool:
+        """
+        @fn close_day
+        @brief Close the day.
+        @detail If the day is already closed, return False.
+        @return Succeeded or not.
+        """
         if not self.is_day_closed():
             self.tasks.append(TaskLog(len(self.tasks), time))
             self.calculate_logged_time()
@@ -140,7 +187,12 @@ class TaskLogList():
         else:
             return False
 
-    def is_day_closed(self):
+    def is_day_closed(self) -> bool:
+        """
+        @fn is_day_closed
+        @breif Check if the day is closed.
+        @return If the day is closed.
+        """
         if not len(self.tasks):
             return False
 
@@ -150,21 +202,37 @@ class TaskLogList():
 
         return False
 
-    def show_tasks(self):
+    def show_tasks(self) -> None:
+        """
+        @fn show_tasks
+        @brief Prints the list of tasks in order of start time.
+        """
         for task in self.tasks:
             task.show()
         print("")
     
-    def show_tasks_sorted(self):
+    def show_tasks_sorted(self) -> None:
+        """
+        @fn show_tasks_sorted
+        @brief Prints the list of tasks in order of ticket id.
+        """
         for tasks_sorted in self.tasks_sorted:
             tasks_sorted.show()
         print("")
     
-    def calculate_logged_time(self):
+    def calculate_logged_time(self) -> None:
+        """
+        @fn calculate_logged_time
+        @brief Calculate logged time of every task.
+        """
         for n in range(len(self.tasks) - 1):
             self.tasks[n].logged_time = self.tasks[n+1].start_time - self.tasks[n].start_time
 
-    def sort(self):
+    def sort(self) -> None:
+        """
+        @fn sort
+        @brief Sort tasks in order of ticket id.
+        """
         self.tasks_sorted = sorted(self.tasks)
         
         n = 0
@@ -185,9 +253,17 @@ class TaskLogList():
                     del self.tasks_sorted[n]
                     n -= 1
     
-    def clear(self):
+    def clear(self) -> None:
+        """
+        @fn clear
+        @brief Clear all tasks.
+        """
         self.tasks.clear()
         self.tasks_sorted.clear()
 
-    def get_tasks_sorted(self):
+    def get_tasks_sorted(self) -> list[TaskLog]:
+        """
+        @fn get_tasks_sorted
+        @brief Get list of sorted tasks.
+        """
         return self.tasks_sorted
