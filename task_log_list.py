@@ -14,7 +14,8 @@ class TaskLog():
     @class TaskLog
     @brief Set of parameters of a task
     """
-    def __init__(self, id, start_time, ticket_number=0, comment="EndOfDay") -> None:
+    def __init__(self, id: int, start_time: datetime,
+        ticket_number: int=0, comment: str="EndOfDay") -> None:
         """
         @fn __init__
         @brief Constructor of TaskLog class
@@ -62,7 +63,7 @@ class TaskLog():
         return self._comment
 
     @comment.setter
-    def comment(self, comment) -> None:
+    def comment(self, comment: str) -> None:
         if self._ticket_number:
             self._comment = comment
 
@@ -96,10 +97,11 @@ class TaskLog():
         """
         pass
 
-    def merge(self, other_task) -> bool:
+    def merge(self, other_task: int) -> bool:
         """
         @fn merge
         @brief Merge with other task.
+        @param other_task Instance of TaskLog class of other task.
         @return Succeeded or not.
         """
         if not self == other_task:
@@ -118,12 +120,15 @@ class TaskLogList():
         self.tasks = []
         self.tasks_sorted = []
 
-    def append_new(self, start_time, ticket_number, comment) -> bool:
+    def append_new(self, start_time: datetime, ticket_number: int, comment: str) -> bool:
         """
         @fn append_new
         @brief Append new task log to the list.
         @detail To append new task, the day should be open 
                 and star time of the new task should be latter than the last task.
+        @param start_time Star time of the new task.
+        @param ticket_number Ticket number of the new task.
+        @param comment Comment for the new task.
         @return Succeeded or not.
         """
         if self.is_day_closed():
@@ -140,10 +145,13 @@ class TaskLogList():
         self.tasks.append(TaskLog(len(self.tasks), start_time, ticket_number, comment))
         return True
 
-    def insert_new(self, start_time, ticket_number, comment) -> bool:
+    def insert_new(self, start_time: datetime, ticket_number: int, comment: str) -> bool:
         """
         @fn insert_new
         @brief Insert new task before existing tasks.
+        @param start_time Star time of the new task.
+        @param ticket_number Ticket number of the new task.
+        @param comment Comment for the new task.
         @return Succeeded or not.
         """
         if self.is_day_closed():
@@ -154,10 +162,11 @@ class TaskLogList():
         self.tasks = sorted(self.tasks, key=lambda task: task.start_time)
         return True
 
-    def remove_task(self, task_id) -> bool:
+    def remove_task(self, task_id: int) -> bool:
         """
         @fn remove_task
         @brief Remove an existing task.
+        @param task_id The id of the task to remove.
         @return Suceeded or not
         """
         if self.is_day_closed():
@@ -172,11 +181,12 @@ class TaskLogList():
         
         return True
 
-    def close_day(self, time) -> bool:
+    def close_day(self, time: datetime) -> bool:
         """
         @fn close_day
         @brief Close the day.
         @detail If the day is already closed, return False.
+        @param time The time to end the day.
         @return Succeeded or not.
         """
         if not self.is_day_closed():
@@ -261,9 +271,10 @@ class TaskLogList():
         self.tasks.clear()
         self.tasks_sorted.clear()
 
-    def get_tasks_sorted(self) -> list[TaskLog]:
+    def get_tasks_sorted(self): # TODO : return type
         """
         @fn get_tasks_sorted
         @brief Get list of sorted tasks.
+        @return Sorted list of tasks.
         """
         return self.tasks_sorted
