@@ -5,8 +5,18 @@
 @date 2021/1/30
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, time, timedelta
 from redminelib import Redmine
+
+
+def timedelta_to_hour(timedelta: timedelta) -> float:
+    """
+    @fn timedelta_to_hour
+    @brief Convert timedelta to hours in float.
+    @return hours Converted hours.
+    """
+    seconds_per_hour = 3600
+    return round(timedelta.total_seconds() / seconds_per_hour, 1)
 
 
 class RedmineEntry(object):
@@ -39,8 +49,7 @@ class RedmineEntry(object):
         time_entry = self.redmine.time_entry.new()
         time_entry.issue_id = ticket_number
         time_entry.spent_on = date
-        # time_entry.hours = 3   # TODO
-        time_entry.hours = logged_time
+        time_entry.hours = timedelta_to_hour(logged_time)
         time_entry.activity_id = activity
         time_entry.comments = comment
         # time_entry.save()
@@ -50,7 +59,7 @@ class RedmineEntry(object):
             "submit: ",
             ticket_number,
             date,
-            logged_time,
+            time_entry.hours,
             activity,
             comment
         )

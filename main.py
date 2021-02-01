@@ -270,7 +270,7 @@ class TaskList(QWidget):
 
         # # Debug
         # self.task_log_list.show_tasks()
-        # self.task_log_list.show_tasks_sorted()
+        self.task_log_list.show_tasks_sorted()
 
     def _calculateDuration(self) -> None:
         """
@@ -299,8 +299,11 @@ class TaskList(QWidget):
             self.addNewTask()
         
         for n in range(self.task_table.rowCount()):
+            today = datetime.datetime.combine(datetime.date.today(), datetime.time(9+n, 0, 0))
+
             widget = self.task_table.cellWidget(n, 0)
-            widget.setDateTime(datetime.datetime(2020, 11, 17, 9+n, 0, 0))
+            # widget.setDateTime(datetime.datetime(2021, 2, 1, 9+n, 0, 0))
+            widget.setDateTime(today)
 
             widget2 = self.task_table.cellWidget(n, 2)
             widget2.setCurrentIndex(n % 3 + 1)
