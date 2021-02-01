@@ -235,22 +235,7 @@ class TaskList(QWidget):
         @brief Submit logged time to the tickets.
         @param optionStruct Specify username, password and today's date.
         """
-        num_tasks = self.task_table.rowCount()
-        self.task_log_list.clear()
-
-        for n in range(num_tasks):
-            starttime = self.task_table.cellWidget(n, 0).dateTime().toPyDateTime()
-            # TODO : check if ticket number is valid
-            ticket_str = self.task_table.cellWidget(n, 2).currentText()
-            try:
-                ticket = int(ticket_str)
-            except ValueError:
-                print(ticket_str)
-                ticket = -1
-                # continue
-            comment = self.task_table.item(n, 4).text()
-
-            self.task_log_list.append_new(starttime, ticket, comment)
+        self._gather_tasks()
 
         # Close the day
         self.task_log_list.close_day(datetime.datetime.today())
@@ -270,7 +255,7 @@ class TaskList(QWidget):
 
         # # Debug
         # self.task_log_list.show_tasks()
-        self.task_log_list.show_tasks_sorted()
+        # self.task_log_list.show_tasks_sorted()
 
     def _calculateDuration(self) -> None:
         """
@@ -312,6 +297,32 @@ class TaskList(QWidget):
             # item.setText(str(n) + "th job")
             item.setText("th job")
             self.task_table.setItem(n, 4, item)
+
+    def _gather_tasks(self) -> None:
+        """
+        @fn _gather_tasks
+        @brief Gather all task parameters from task_table and contain into task_log_list.
+        @note If comment is empty, put dummy comment.
+        """
+        num_tasks = self.task_table.rowCount()
+        self.task_log_list.clear()
+
+        for n in range(num_tasks):
+            starttime = self.task_table.cellWidget(n, 0).dateTime().toPyDateTime()
+            # TODO : check if ticket number is valid
+            ticket_str = self.task_table.cellWidget(n, 2).currentText()
+            try:
+                ticket = int(ticket_str)
+            except ValueError:
+                print(ticket_str)
+                ticket = -1
+
+            comment = self.task_table.item(n, 4).text()
+            # If comment is empty, put dummy
+            if not comment:
+                comment = "Comment is empty"
+
+            self.task_log_list.append_new(starttime, ticket, comment)
 
 
 def main() -> None:

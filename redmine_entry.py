@@ -13,7 +13,8 @@ def timedelta_to_hour(timedelta: timedelta) -> float:
     """
     @fn timedelta_to_hour
     @brief Convert timedelta to hours in float.
-    @return hours Converted hours.
+    @param timedelta Timedelta to convert.
+    @return Converted hours.
     """
     seconds_per_hour = 3600
     return round(timedelta.total_seconds() / seconds_per_hour, 1)
