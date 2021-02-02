@@ -110,7 +110,7 @@ class TimeKeeper(QWidget):
         button_submit.setShortcut("Ctrl+S")
         button_submit.clicked.connect(lambda: self._submitTaskList())
 
-        self.task_list = TaskList()
+        self.task_list = TaskListWidget()
         self.optionStruct = OptionStruct()
         
         self.layout.addWidget(button)
@@ -153,7 +153,7 @@ class TimeKeeper(QWidget):
         dialog.exec_()
 
 
-class TaskList(QWidget):
+class TaskListWidget(QWidget):
     """
     @class TaskList
     @brief Data set to contain the list of tasks and times spent.

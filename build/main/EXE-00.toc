@@ -40,7 +40,7 @@
  [],
  False,
  False,
- 1605102740,
+ 1612273930,
  [('run.exe',
    'e:\\y-kas\\program\\anaconda3\\envs\\pyqt5\\lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit\\run.exe',
    'EXECUTABLE')])
