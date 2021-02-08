@@ -51,7 +51,7 @@ class TimeKeeperOption(QWidget):
         """
         super().__init__()
         self.userfolder = ""
-        self.savefile = "C:\\Users\\y-kas\\Desktop\\TimeKeeperOption.txt"
+        self.savefile = "TimeKeeperOption.txt"
 
         self.layout_options = QFormLayout(self)
         self._initUI()
@@ -134,11 +134,14 @@ class TimeKeeperOption(QWidget):
         username = ""
         password = ""
 
-        with open(self.savefile, "r") as f:
-            lines = [s.strip() for s in f.readlines()]
-            self.userfolder = lines[0]
-            username = lines[1]
-            password = lines[2]
+        try:
+            with open(self.savefile, "r") as f:
+                lines = [s.strip() for s in f.readlines()]
+                self.userfolder = lines[0]
+                username = lines[1]
+                password = lines[2]
+        except FileNotFoundError:
+            print("No option file found.")
         
         # self.edit_userfolder.setText(self.userfolder)
         self.edit_username.setText(username)
