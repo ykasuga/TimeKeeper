@@ -253,6 +253,9 @@ class TaskListWidget(QWidget):
                 task.comment
             )
 
+        # Debug
+        print("end")
+
         # # Debug
         # self.task_log_list.show_tasks()
         # self.task_log_list.show_tasks_sorted()
@@ -314,7 +317,7 @@ class TaskListWidget(QWidget):
             try:
                 ticket = int(ticket_str)
             except ValueError:
-                print(ticket_str)
+                print(f"Invalid ticket number: {ticket_str}")
                 ticket = -1
 
             # If comment is empty, put dummy
