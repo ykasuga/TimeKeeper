@@ -317,10 +317,11 @@ class TaskListWidget(QWidget):
                 print(ticket_str)
                 ticket = -1
 
-            comment = self.task_table.item(n, 4).text()
             # If comment is empty, put dummy
-            if not comment:
+            if not self.task_table.item(n, 4):
                 comment = "Comment is empty"
+            else:
+                comment = self.task_table.item(n, 4).text()
 
             self.task_log_list.append_new(starttime, ticket, comment)
 
