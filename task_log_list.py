@@ -162,7 +162,7 @@ class TaskLogList():
         self.tasks = sorted(self.tasks, key=lambda task: task.start_time)
         return True
 
-    def remove_task(self, task_id: int) -> bool:
+    def remove_task(self, task_id: int=-1) -> bool:
         """
         @fn remove_task
         @brief Remove an existing task.
@@ -173,7 +173,9 @@ class TaskLogList():
             print("The day is already closed")
             return False
 
-        if task_id < len(self.tasks):
+        if task_id == -1:
+            self.tasks.pop(-1)
+        elif task_id < len(self.tasks):
             del self.tasks[task_id]
         else:
             print("task_id out of range")
