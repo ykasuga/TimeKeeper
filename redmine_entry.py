@@ -17,7 +17,7 @@ def timedelta_to_hour(timedelta: timedelta) -> float:
     @return Converted hours.
     """
     seconds_per_hour = 3600
-    return round(timedelta.total_seconds() / seconds_per_hour, 1)
+    return round(timedelta.total_seconds() / seconds_per_hour, 2)
 
 
 class RedmineEntry(object):
