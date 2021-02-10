@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import QMessageBox, QDialog
 
 from task_log_list import TaskLogList
 from time_keeper_option import TimeKeeperOption, OptionStruct
-from redmine_entry import RedmineEntry
+from redmine_entry import RedmineEntry, timedelta_to_hour
 
 
 class MyWindow(QMainWindow):
@@ -145,7 +145,8 @@ class TimeKeeper(QWidget):
         @fn _submitTaskList
         @brief Submit tasks to the tickets at the end of the day.
         """
-        self.task_list.submit(self.optionStruct)
+        if not self.task_list.submit(self.optionStruct):
+            return
 
         dialog = QMessageBox()
         dialog.setGeometry(500, 500, 200, 150)
@@ -172,8 +173,7 @@ class TaskListWidget(QWidget):
         self.task_table = QTableWidget(initial_row, len(labels), self)
         self.task_table.setHorizontalHeaderLabels(labels)
 
-        # self.tickets = ["Lunch", "#001 hoge", "#002 moge", "#003 hage"]
-        self.tickets = ["Lunch", "001", "002", "003"]
+        self.tickets = {"Lunch": "-1", "#001 hoge": "001", "#002 moge": "002", "#003 hage": "003"}
 
         for n in range(initial_row):
             self._setTaskRow(n)
@@ -208,7 +208,7 @@ class TaskListWidget(QWidget):
         # Ticket
         comboBox = QComboBox()
         comboBox.setEditable(True)
-        comboBox.addItems(self.tickets)
+        comboBox.addItems(self.tickets.values())
         comboBox.setFrame(False)
         self.task_table.setCellWidget(row, 2, comboBox)
 
@@ -239,11 +239,25 @@ class TaskListWidget(QWidget):
 
         # Close the day
         self.task_log_list.close_day(datetime.datetime.today())
+        tasks_sorted = self.task_log_list.get_tasks_sorted()
+
+        # Confirmation dialog
+        diag_confirm = QMessageBox()
+        text = "Today's tasks:\n"
+        for task in tasks_sorted:
+            text += "{:10} {:>10} {:>10} {}\n".format(
+                task.ticket_number,
+                timedelta_to_hour(task.logged_time),
+                task.activity_id,
+                task.comment)
+        diag_confirm.setText(text)
+        diag_confirm.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        if diag_confirm.exec_() == QMessageBox.No:
+            return False
 
         # Submit tasks to redmine
         redmine = RedmineEntry("http://redmine03/", 
             username=optionStruct.username, password=optionStruct.password)
-        tasks_sorted = self.task_log_list.get_tasks_sorted()
         for task in tasks_sorted:
             redmine.submitTimeEntry(
                 optionStruct.today,
@@ -256,9 +270,7 @@ class TaskListWidget(QWidget):
         # Debug
         print("end")
 
-        # # Debug
-        # self.task_log_list.show_tasks()
-        # self.task_log_list.show_tasks_sorted()
+        return True
 
     def _calculateDuration(self) -> None:
         """
