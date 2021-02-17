@@ -10,7 +10,7 @@ import sys
 import datetime
 
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QApplication, QLayout, QMainWindow, QAction, QTableWidgetItem, QWidget, qApp
+from PyQt5.QtWidgets import QApplication, QMainWindow, QAction, QTableWidgetItem, QWidget, qApp
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QPushButton, QTableWidget, QComboBox, QLineEdit, QCompleter, QDateTimeEdit
 from PyQt5.QtWidgets import QMessageBox, QDialog
@@ -169,10 +169,16 @@ class TaskListWidget(QWidget):
         self.task_log_list = TaskLogList()
 
         initial_row = 2
+
+        # Set horizontal header labels
         labels = ["Start Time", "Duration", "Ticket", "Activity", "Comment"]
         self.task_table = QTableWidget(initial_row, len(labels), self)
         self.task_table.setHorizontalHeaderLabels(labels)
 
+        # Set last column to stretch
+        self.task_table.horizontalHeader().setStretchLastSection(True)
+
+        # TODO Examples of tickets
         self.tickets = {"Lunch": "-1", "#001 hoge": "001", "#002 moge": "002", "#003 hage": "003"}
 
         for n in range(initial_row):
