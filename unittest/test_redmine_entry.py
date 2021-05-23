@@ -6,7 +6,7 @@
 """
 
 import datetime
-from redmine_entry import RedmineEntry, timedelta_to_hour
+from src.redmine_entry import RedmineEntry, timedelta_to_hour
 
 import unittest
 from datetime import timedelta

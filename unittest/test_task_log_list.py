@@ -6,7 +6,7 @@
 """
 
 from datetime import datetime
-from task_log_list import TaskLog
+from src.task_log_list import TaskLog
 
 import unittest
 
@@ -21,8 +21,7 @@ class TestTaskLog(unittest.TestCase):
         return super().setUp()
 
     def test___lt__(self):
-        # self.assertTrue(self.tasklog1 < self.tasklog2)
-        self.assertTrue(self.tasklog1 > self.tasklog2)
+        self.assertTrue(self.tasklog1 < self.tasklog2)
 
 
 if __name__ == "__main__":
