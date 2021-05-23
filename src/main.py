@@ -168,6 +168,7 @@ class TaskListWidget(QWidget):
 
         self.task_log_list = TaskLogList()
 
+        # TODO Number of initail task lists
         initial_row = 1
 
         # Set horizontal header labels
