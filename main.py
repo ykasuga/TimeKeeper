@@ -168,7 +168,7 @@ class TaskListWidget(QWidget):
 
         self.task_log_list = TaskLogList()
 
-        initial_row = 2
+        initial_row = 1
 
         # Set horizontal header labels
         labels = ["Start Time", "Duration", "Ticket", "Activity", "Comment"]
@@ -301,9 +301,6 @@ class TaskListWidget(QWidget):
         @fn _setSample()
         @brief Set examples of task list for debugging.
         """
-        for _ in range(3):
-            self.addNewTask()
-        
         for n in range(self.task_table.rowCount()):
             today = datetime.datetime.combine(datetime.date.today(), datetime.time(9+n, 0, 0))
 
