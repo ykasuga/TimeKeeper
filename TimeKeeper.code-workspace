@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"python.pythonPath": "C:\\Users\\y-kas\\.conda\\envs\\TimeKeeper\\python.exe"
+		"python.pythonPath": "C:\\Users\\y-kas\\.conda\\envs\\TimeKeeper\\python.exe",
+		"python.testing.unittestEnabled": true
 	}
 }
