@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['main.py'],
-             pathex=['E:\\y-kas\\Document\\VSCode\\TimeKeeper'],
+             pathex=['E:\\Documents\\Workspace\\TimeKeeper'],
              binaries=[],
              datas=[],
              hiddenimports=[],

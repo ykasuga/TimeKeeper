@@ -1,2 +1,2 @@
-conda activate PyQt5
+conda activate TimeKeeper
 pyinstaller main.py
