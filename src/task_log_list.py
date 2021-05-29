@@ -9,7 +9,8 @@
 import datetime
 from datetime import timedelta
 
-from redmine_entry import timedelta_to_hour
+# from redmine_entry import timedelta_to_hour
+from src.redmine_entry import timedelta_to_hour
 
 
 class TaskLog():

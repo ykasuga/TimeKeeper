@@ -8,9 +8,8 @@
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceRoot}/src/main.py",
+            "program": "${workspaceRoot}/main.py",
             "console": "integratedTerminal",
-            "cwd": "${workspaceFolder}"
         }
     ]
 }

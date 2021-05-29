@@ -14,9 +14,9 @@ from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QPushButton, QTableWidget, QComboBox, QLineEdit, QCompleter, QDateTimeEdit
 from PyQt5.QtWidgets import QMessageBox, QDialog
 
-from task_log_list import TaskLogList
-from time_keeper_option import TimeKeeperOption, OptionStruct
-from redmine_entry import RedmineEntry, timedelta_to_hour
+from src.task_log_list import TaskLogList
+from src.time_keeper_option import TimeKeeperOption, OptionStruct
+from src.redmine_entry import RedmineEntry, timedelta_to_hour
 # from timedelta_to_hour import timedelta_to_hour
 
 

@@ -8,7 +8,7 @@
 
 import sys
 from PyQt5.QtWidgets import QApplication
-from mywindow import MyWindow
+from src.mywindow import MyWindow
 
 
 def main() -> None:
