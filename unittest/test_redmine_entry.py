@@ -5,11 +5,12 @@
 @date 2021/5/23
 """
 
-import datetime
 from src.redmine_entry import RedmineEntry, timedelta_to_hour
+# from src.timedelta_to_hour import timedelta_to_hour
+# import src.timedelta_to_hour
 
 import unittest
-from datetime import timedelta
+import datetime
 
 
 class TestTimedeltaToHour(unittest.TestCase):

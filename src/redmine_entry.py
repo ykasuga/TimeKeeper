@@ -5,8 +5,9 @@
 @date 2021/1/30
 """
 
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 from redminelib import Redmine
+# from timedelta_to_hour import timedelta_to_hour
 
 
 def timedelta_to_hour(timedelta: timedelta) -> float:

@@ -7,6 +7,9 @@
 """
 
 import datetime
+from datetime import timedelta
+
+from redmine_entry import timedelta_to_hour
 
 
 class TaskLog():
@@ -27,7 +30,7 @@ class TaskLog():
         """
         self.id = id
         self._start_time = start_time
-        self.logged_time = 0
+        self.logged_time = timedelta(0.)
         self._ticket_number = ticket_number
         self.activity_id = 1
         self._comment = comment
@@ -280,3 +283,15 @@ class TaskLogList():
         @return Sorted list of tasks.
         """
         return self.tasks_sorted
+
+    def get_total_time(self) -> float:
+        """Get total time in the day
+        """
+        total_time = 0.
+
+        self.calculate_logged_time()
+        self.sort()
+        for task in self.tasks_sorted:
+            total_time += timedelta_to_hour(task.logged_time)
+
+        return total_time

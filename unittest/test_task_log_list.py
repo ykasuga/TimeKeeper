@@ -182,7 +182,7 @@ class TestTaskLogList(unittest.TestCase):
             self.new_task2.start_time, self.new_task2.ticket_number, self.new_task2.comment
         ))
 
-        self.assertEqual(1, taskList.get_total_time())
+        self.assertEqual(1., taskList.get_total_time())
 
 
 if __name__ == "__main__":
