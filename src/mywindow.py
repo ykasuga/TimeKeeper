@@ -288,7 +288,7 @@ class TaskListWidget(QWidget):
                 self.task_table.cellWidget(n+1, 0).text(), "%H:%M"
             )
             duration = endtime - starttime
-            item.setText(str(duration))
+            item.setText(":".join(str(duration).split(":")[:2]))
             self.task_table.setItem(n, 1, item)
 
     def _setSample(self) -> None:
