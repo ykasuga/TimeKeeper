@@ -5,9 +5,7 @@
 @date 2021/5/23
 """
 
-from src.redmine_entry import RedmineEntry, timedelta_to_hour
-# from src.timedelta_to_hour import timedelta_to_hour
-# import src.timedelta_to_hour
+from src.timedelta_to_hour import timedelta_to_hour
 
 import unittest
 import datetime

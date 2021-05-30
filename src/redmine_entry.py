@@ -7,18 +7,7 @@
 
 from datetime import datetime, timedelta
 from redminelib import Redmine
-# from timedelta_to_hour import timedelta_to_hour
-
-
-def timedelta_to_hour(timedelta: timedelta) -> float:
-    """
-    @fn timedelta_to_hour
-    @brief Convert timedelta to hours in float.
-    @param timedelta Timedelta to convert.
-    @return Converted hours.
-    """
-    seconds_per_hour = 3600
-    return round(timedelta.total_seconds() / seconds_per_hour, 2)
+from src.timedelta_to_hour import timedelta_to_hour
 
 
 class RedmineEntry(object):
