@@ -8,8 +8,8 @@
 
 import datetime
 from datetime import timedelta
+from typing import List
 
-# from redmine_entry import timedelta_to_hour
 from src.redmine_entry import timedelta_to_hour
 
 
@@ -234,6 +234,7 @@ class TaskLogList():
         """
         for tasks_sorted in self.tasks_sorted:
             tasks_sorted.show()
+        print(f"Total time: {self.get_total_time()}")
         print("")
     
     def calculate_logged_time(self) -> None:
@@ -277,7 +278,7 @@ class TaskLogList():
         self.tasks.clear()
         self.tasks_sorted.clear()
 
-    def get_tasks_sorted(self): # TODO : return type
+    def get_tasks_sorted(self) -> List[TaskLog]:
         """
         @fn get_tasks_sorted
         @brief Get list of sorted tasks.

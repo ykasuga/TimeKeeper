@@ -17,7 +17,6 @@ from PyQt5.QtWidgets import QMessageBox, QDialog
 from src.task_log_list import TaskLogList
 from src.time_keeper_option import TimeKeeperOption, OptionStruct
 from src.redmine_entry import RedmineEntry, timedelta_to_hour
-# from timedelta_to_hour import timedelta_to_hour
 
 
 class MyWindow(QMainWindow):
@@ -257,6 +256,7 @@ class TaskListWidget(QWidget):
                 timedelta_to_hour(task.logged_time),
                 task.activity_id,
                 task.comment)
+        text += f"Total time: {self.task_log_list.get_total_time()}"
         diag_confirm.setText(text)
         diag_confirm.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         if diag_confirm.exec_() == QMessageBox.No:
