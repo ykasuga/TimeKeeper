@@ -12,6 +12,8 @@ from datetime import datetime
 import sys
 from io import StringIO
 
+from src.redmine_entry import timedelta_to_hour
+
 
 class TestTaskLog(unittest.TestCase):
     """Test case for TaskLog class
@@ -168,6 +170,38 @@ class TestTaskLogList(unittest.TestCase):
         # Remove task
         self.assertTrue(taskList.remove_task(1))
         self.assertEqual(1, len(taskList.tasks))
+
+    def test_get_str_tasks_sorted(self) -> None:
+        """Test get_str_tasks_sorted() method
+        """
+        taskList = TaskLogList()
+
+        # Append new task
+        self.assertTrue(taskList.append_new(
+            self.new_task1.start_time, self.new_task1.ticket_number, self.new_task1.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            self.new_task2.start_time, self.new_task2.ticket_number, self.new_task2.comment
+        ))
+
+        # Expected string
+        expected: str = ""
+        # task1
+        expected += "{:10} {:>10} {:>10} {}\n".format(
+            self.new_task1.ticket_number,
+            timedelta_to_hour(self.new_task1.logged_time),
+            self.new_task1.activity_id,
+            self.new_task1.comment)
+        # task2
+        expected += "{:10} {:>10} {:>10} {}\n".format(
+            self.new_task2.ticket_number,
+            timedelta_to_hour(self.new_task2.logged_time),
+            self.new_task2.activity_id,
+            self.new_task2.comment)
+        # Total time
+        expected += "Total time: 1.0"
+
+        self.assertEqual(expected, taskList.get_str_tasks_sorted())
 
     def test_get_total_time(self) -> None:
         """Test get_total_time() method

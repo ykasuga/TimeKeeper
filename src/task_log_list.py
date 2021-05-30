@@ -286,6 +286,25 @@ class TaskLogList():
         """
         return self.tasks_sorted
 
+    def get_str_tasks_sorted(self) -> str:
+        """Get list of tasks_sorted in formatted string
+
+        Returns:
+            str: List of tasks_sorted in formatted string
+        """
+        self.sort()
+        
+        str_tasks_sorted: str = ""
+        for task in self.tasks_sorted:
+            str_tasks_sorted += "{:10} {:>10} {:>10} {}\n".format(
+                task.ticket_number,
+                timedelta_to_hour(task.logged_time),
+                task.activity_id,
+                task.comment)
+        str_tasks_sorted += f"Total time: {self.get_total_time()}"
+
+        return str_tasks_sorted
+
     def get_total_time(self) -> float:
         """Get total time in the day
         """
