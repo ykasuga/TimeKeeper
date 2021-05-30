@@ -250,13 +250,7 @@ class TaskListWidget(QWidget):
         # Confirmation dialog
         diag_confirm = QMessageBox()
         text = "Today's tasks:\n"
-        for task in tasks_sorted:
-            text += "{:10} {:>10} {:>10} {}\n".format(
-                task.ticket_number,
-                timedelta_to_hour(task.logged_time),
-                task.activity_id,
-                task.comment)
-        text += f"Total time: {self.task_log_list.get_total_time()}"
+        text += self.task_log_list.get_str_tasks_sorted()
         diag_confirm.setText(text)
         diag_confirm.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         if diag_confirm.exec_() == QMessageBox.No:
