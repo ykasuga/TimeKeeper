@@ -5,15 +5,14 @@
 @date 2021/5/30
 """
 
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 
 
-def timedelta_to_hour(timedelta: timedelta) -> float:
+def timedelta_to_hour(delta_t: timedelta) -> float:
     """
     @fn timedelta_to_hour
     @brief Convert timedelta to hours in float.
     @param timedelta Timedelta to convert.
     @return Converted hours.
     """
-    seconds_per_hour = 3600
-    return round(timedelta.total_seconds() / seconds_per_hour, 2)
+    return round(delta_t / timedelta(hours=1), 2)
