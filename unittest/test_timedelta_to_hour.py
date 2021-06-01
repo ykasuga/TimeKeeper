@@ -16,6 +16,8 @@ class TestTimedeltaToHour(unittest.TestCase):
     """
 
     def test_timedelta_to_hour(self):
+        """Test timedelta_to_hour() method
+        """
         timedelta = datetime.timedelta(seconds=900)
         expected = 0.25
         actual = timedelta_to_hour(timedelta)

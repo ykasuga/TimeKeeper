@@ -5,7 +5,7 @@
 @date 2021/5/30
 """
 
-from datetime import date, datetime, timedelta
+from datetime import timedelta
 
 
 def timedelta_to_hour(delta_t: timedelta) -> float:
