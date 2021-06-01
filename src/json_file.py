@@ -6,6 +6,7 @@
 """
 
 import os
+import json
 
 
 class JsonFile(object):
@@ -16,6 +17,12 @@ class JsonFile(object):
         """
         self.file = None
         super().__init__()
+
+    def __del__(self) -> None:
+        """Destructor of JsonFile class
+        """
+        if self.file:
+            self.file.close()
 
     def open(self, path_file: str, mode: str):
         """Open a new file
@@ -43,4 +50,21 @@ class JsonFile(object):
             return False
 
         self.file = open(path_file, mode)
+        return True
+
+    def write(self, content):
+        """Write dictionary to json file
+
+        Args:
+            content (str): Content to write to the file
+
+        Returns:
+            bool: Succeeded or failed
+        """
+        if (not self.file):
+            return False
+
+        json_str = json.dumps(content, indent=4)
+        self.file.writelines(json_str)
+
         return True
