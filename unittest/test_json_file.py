@@ -26,10 +26,14 @@ class TestJsonFile(unittest.TestCase):
         """
         json = JsonFile()
 
-        # File doesn't exist
+        # Read mode but file doesn't exist
         self.assertFalse(json.open("file_doesnt_exist.json", "r"))
+        # Write mode but file already exists
+        self.assertFalse(json.open(self.test_dir + "/sample.json", "w"))
         # Existing file
         self.assertTrue(json.open(self.test_dir + "/sample.json", "r"))
+        # Already opended a file
+        self.assertFalse(json.open(self.test_dir + "/sample.json", "r"))
 
     def test_write(self):
         """Test write() method
@@ -62,6 +66,9 @@ class TestJsonFile(unittest.TestCase):
 
         if (os.path.exists(path_file)):
             os.remove(path_file)
+
+        # Write before openning file
+        self.assertFalse(jsonFile.write(test_str))
 
         # Open
         self.assertTrue(jsonFile.open(path_file, "w"))
