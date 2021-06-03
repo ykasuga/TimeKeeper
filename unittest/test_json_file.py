@@ -35,8 +35,12 @@ class TestJsonFile(unittest.TestCase):
         # Already opended a file
         self.assertFalse(json.open(self.test_dir + "/sample.json", "r"))
 
-    def test_write(self):
-        """Test write() method
+    # def test_read(self):
+    #     """Test read() method
+    #     """
+
+    def test_read_write(self):
+        """Test read() and write() method
         """
         path_file = self.test_dir + "/test_file.json"
         test_str = {
@@ -62,25 +66,35 @@ class TestJsonFile(unittest.TestCase):
                 ],
             },
         }
-        jsonFile = JsonFile()
 
         if (os.path.exists(path_file)):
             os.remove(path_file)
 
+        #
+        # Write test
+        #
+        jsonFile_write = JsonFile()
         # Write before openning file
-        self.assertFalse(jsonFile.write(test_str))
-
+        self.assertFalse(jsonFile_write.write(test_str))
         # Open
-        self.assertTrue(jsonFile.open(path_file, "w"))
+        self.assertTrue(jsonFile_write.open(path_file, "w"))
         # Write
-        self.assertTrue(jsonFile.write(test_str))
+        self.assertTrue(jsonFile_write.write(test_str))
         # Close the file
-        jsonFile = None
+        jsonFile_write = None
 
-        # Read file and check content
-        with open(path_file) as file:
-            read_str = json.load(file)
-        self.assertEqual(test_str, read_str)
+        #
+        # Read test
+        #
+        jsonFile_read = JsonFile()
+        # Open
+        jsonFile_read.open(path_file, "r")
+        # Read
+        read_content = jsonFile_read.read()
+        # Assert
+        self.assertEqual(test_str, read_content)
+        # Close the file
+        jsonFile_read = None
 
 
 if __name__ == "__main__":

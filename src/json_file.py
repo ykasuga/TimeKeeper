@@ -52,8 +52,20 @@ class JsonFile(object):
         self.file = open(path_file, mode)
         return True
 
+    def read(self) -> str:
+        """Read json file
+
+        Returns:
+            str: Content in the file
+        """
+        if not self.file:
+            return None
+
+        content = json.load(self.file)
+        return content
+
     def write(self, content: str) -> bool:
-        """Write dictionary to json file
+        """Write string to json file
 
         Args:
             content (str): Content to write to the file
@@ -61,7 +73,7 @@ class JsonFile(object):
         Returns:
             bool: True for success, False for failure
         """
-        if (not self.file):
+        if not self.file:
             return False
 
         json_str = json.dumps(content, indent=4)
