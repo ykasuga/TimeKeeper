@@ -24,7 +24,7 @@ class JsonFile(object):
         if self.file:
             self.file.close()
 
-    def open(self, path_file: str, mode: str):
+    def open(self, path_file: str, mode: str) -> bool:
         """Open a new file
 
         Args:
@@ -32,7 +32,7 @@ class JsonFile(object):
             mode (str): Open mode: "r" or "w"
 
         Returns:
-            bool: Succeeded or failed
+            bool: True for success, False for failure
         """
         mode_read = "r"
         mode_write = "w"
@@ -45,21 +45,21 @@ class JsonFile(object):
         if mode == mode_read and not os.path.exists(path_file):
             return False
 
-        # Write mode but file already exist
+        # Write mode but file already exists
         if mode == mode_write and os.path.exists(path_file):
             return False
 
         self.file = open(path_file, mode)
         return True
 
-    def write(self, content):
+    def write(self, content: str) -> bool:
         """Write dictionary to json file
 
         Args:
             content (str): Content to write to the file
 
         Returns:
-            bool: Succeeded or failed
+            bool: True for success, False for failure
         """
         if (not self.file):
             return False
