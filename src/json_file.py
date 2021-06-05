@@ -46,8 +46,8 @@ class JsonFile(object):
             return False
 
         # Write mode but file already exists
-        if mode == mode_write and os.path.exists(path_file):
-            return False
+        # if mode == mode_write and os.path.exists(path_file):
+        #     return False
 
         self.file = open(path_file, mode)
         return True
@@ -78,5 +78,8 @@ class JsonFile(object):
 
         json_str = json.dumps(content, indent=4)
         self.file.writelines(json_str)
+
+        # Close the file
+        self.file.close()
 
         return True

@@ -203,6 +203,34 @@ class TaskLogList():
 
         return str_tasks_sorted
 
+    def get_task_dict(self) -> dict:
+        """Get task list
+
+        Returns:
+            dict: Task list as a dictionary
+        """
+        key = "task_list"
+        task_dict = {
+            key: []
+        }
+
+        key_star_time = "start_time"
+        key_ticket_id = "ticket_id"
+        key_activity_id = "activity_id"
+        key_comment = "comment"
+
+        for task in self.tasks:
+            task_dict[key].append(
+                {
+                    key_star_time: task.start_time.strftime("%H:%M:%S"),
+                    key_ticket_id: task.ticket_number,
+                    key_activity_id: task.activity_id,
+                    key_comment: task.comment
+                },
+            )
+
+        return task_dict
+
     def get_total_time(self) -> float:
         """Get total time in the day
         """

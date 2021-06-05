@@ -29,15 +29,11 @@ class TestJsonFile(unittest.TestCase):
         # Read mode but file doesn't exist
         self.assertFalse(json.open("file_doesnt_exist.json", "r"))
         # Write mode but file already exists
-        self.assertFalse(json.open(self.test_dir + "/sample.json", "w"))
+        # self.assertFalse(json.open(self.test_dir + "/sample.json", "w"))
         # Existing file
         self.assertTrue(json.open(self.test_dir + "/sample.json", "r"))
         # Already opended a file
         self.assertFalse(json.open(self.test_dir + "/sample.json", "r"))
-
-    # def test_read(self):
-    #     """Test read() method
-    #     """
 
     def test_read_write(self):
         """Test read() and write() method
@@ -55,13 +51,13 @@ class TestJsonFile(unittest.TestCase):
                         "start_time" : time(hour=9, minute=0, second=0).strftime("%H:%M:%S"),
                         "ticket_id" : "001",
                         "activity_id" : "1", 
-                        "comments" : "Task 1 comment",
+                        "comment" : "Task 1 comment",
                     },
                     {
                         "starttime" : time(hour=10, minute=0, second=0).strftime("%H:%M:%S"),
                         "ticket_id" : "002",
                         "activity_id" : "2", 
-                        "comments" : "Task 2 comment",
+                        "comment" : "Task 2 comment",
                     }
                 ],
             },

@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import QMessageBox
 from src.task_log_list import TaskLogList
 from src.time_keeper_option import OptionStruct
 from src.redmine_entry import RedmineEntry
+from src.json_file import JsonFile
 
 
 class TaskListWidget(QWidget):
@@ -33,7 +34,7 @@ class TaskListWidget(QWidget):
         self.task_log_list = TaskLogList()
 
         # TODO Number of initail task lists
-        initial_row = 1
+        initial_row = 2
 
         # Set horizontal header labels
         labels = ["Start Time", "Duration", "Ticket", "Activity", "Comment"]
@@ -135,8 +136,21 @@ class TaskListWidget(QWidget):
 
         # Debug
         print("end")
+        self.save()
 
         return True
+
+    def save(self) -> None:
+        """Save tasks
+        """
+        path_file = "savefile.json"
+
+        jsonFile = JsonFile()
+        jsonFile.open(path_file, "w")
+        task_dict = self.task_log_list.get_task_dict()
+        jsonFile.write(task_dict)
+
+        del jsonFile
 
     def _calculateDuration(self) -> None:
         """
