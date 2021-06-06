@@ -79,7 +79,4 @@ class JsonFile(object):
         json_str = json.dumps(content, indent=4)
         self.file.writelines(json_str)
 
-        # Close the file
-        self.file.close()
-
         return True

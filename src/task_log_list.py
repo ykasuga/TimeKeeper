@@ -6,7 +6,7 @@
 @brief Definition of TaskLogList class.
 """
 
-import datetime
+from datetime import datetime
 from typing import List
 
 from src.task_log import TaskLog
@@ -209,9 +209,11 @@ class TaskLogList():
         Returns:
             dict: Task list as a dictionary
         """
-        key = "task_list"
+        key_date = "date"
+        key_task = "task_list"
         task_dict = {
-            key: []
+            key_date: datetime.today().strftime("%Y-%m-%d"),
+            key_task: []
         }
 
         key_star_time = "start_time"
@@ -220,7 +222,7 @@ class TaskLogList():
         key_comment = "comment"
 
         for task in self.tasks:
-            task_dict[key].append(
+            task_dict[key_task].append(
                 {
                     key_star_time: task.start_time.strftime("%H:%M:%S"),
                     key_ticket_id: task.ticket_number,
@@ -231,7 +233,7 @@ class TaskLogList():
 
         return task_dict
 
-    def get_total_time(self) -> float:
+    def get_total_time(self, ndigits: int=2) -> float:
         """Get total time in the day
         """
         total_time = 0.
@@ -241,4 +243,4 @@ class TaskLogList():
         for task in self.tasks_sorted:
             total_time += timedelta_to_hour(task.logged_time)
 
-        return total_time
+        return round(total_time, ndigits)

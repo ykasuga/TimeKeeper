@@ -74,7 +74,7 @@ class TaskListWidget(QWidget):
         dateTimeEdit.setDisplayFormat("h:m")
         dateTimeEdit.setFrame(False)
         dateTimeEdit.setDateTime(datetime.datetime.today())
-        dateTimeEdit.dateTimeChanged.connect(self._calculateDuration)
+        dateTimeEdit.dateTimeChanged.connect(lambda: self._calculateDuration())
         self.task_table.setCellWidget(row, 0, dateTimeEdit)
 
         # Ticket
@@ -144,6 +144,9 @@ class TaskListWidget(QWidget):
         """Save tasks
         """
         path_file = "savefile.json"
+
+        self._gather_tasks()
+        self.task_log_list.sort()
 
         jsonFile = JsonFile()
         jsonFile.open(path_file, "w")
