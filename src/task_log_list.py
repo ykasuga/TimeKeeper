@@ -244,3 +244,28 @@ class TaskLogList():
             total_time += timedelta_to_hour(task.logged_time)
 
         return round(total_time, ndigits)
+
+    def set_tasks(self, task_dict: dict) -> None:
+        """Set task list from dictionary
+
+        Args:
+            task_dict (dict): Dictionary of the task list
+        """
+        # Clear all tasks
+        self.clear()
+
+        key_task = "task_list"
+
+        key_star_time = "start_time"
+        key_ticket_id = "ticket_id"
+        key_activity_id = "activity_id"
+        key_comment = "comment"
+
+        task_list = task_dict[key_task]
+
+        for task in task_list:
+            self.append_new(
+                task[key_star_time],
+                task[key_ticket_id],
+                task[key_comment]
+                )

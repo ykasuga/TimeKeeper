@@ -6,7 +6,8 @@
 @brief Definition of TaskListWidget class
 """
 
-import datetime
+from datetime import datetime, date, time
+from typing import List
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QTableWidgetItem, QWidget
 from PyQt5.QtWidgets import QVBoxLayout
@@ -14,6 +15,7 @@ from PyQt5.QtWidgets import QTableWidget, QComboBox, QLineEdit, QCompleter, QDat
 from PyQt5.QtWidgets import QMessageBox
 
 from src.task_log_list import TaskLogList
+from src.task_log import TaskLog
 from src.time_keeper_option import OptionStruct
 from src.redmine_entry import RedmineEntry
 from src.json_file import JsonFile
@@ -73,7 +75,7 @@ class TaskListWidget(QWidget):
         dateTimeEdit = QDateTimeEdit()
         dateTimeEdit.setDisplayFormat("h:m")
         dateTimeEdit.setFrame(False)
-        dateTimeEdit.setDateTime(datetime.datetime.today())
+        dateTimeEdit.setDateTime(datetime.today())
         dateTimeEdit.dateTimeChanged.connect(lambda: self._calculateDuration())
         self.task_table.setCellWidget(row, 0, dateTimeEdit)
 
@@ -89,9 +91,10 @@ class TaskListWidget(QWidget):
         @fn addNewTask()
         @brief Add new task line.
         """
-        self.task_table.setRowCount(self.task_table.rowCount() + num)
-        self._setTaskRow(self.task_table.rowCount() - 1)
-        self._calculateDuration()
+        for _ in range(num):
+            self.task_table.setRowCount(self.task_table.rowCount() + 1)
+            self._setTaskRow(self.task_table.rowCount() - 1)
+            self._calculateDuration()
 
     def removeTask(self, num:int=1) -> None:
         """
@@ -107,10 +110,10 @@ class TaskListWidget(QWidget):
         @brief Submit logged time to the tickets.
         @param optionStruct Specify username, password and today's date.
         """
-        self._gather_tasks()
+        self.save()
 
         # Close the day
-        self.task_log_list.close_day(datetime.datetime.today())
+        self.task_log_list.close_day(datetime.today())
         tasks_sorted = self.task_log_list.get_tasks_sorted()
 
         # Confirmation dialog
@@ -136,7 +139,6 @@ class TaskListWidget(QWidget):
 
         # Debug
         print("end")
-        self.save()
 
         return True
 
@@ -155,6 +157,24 @@ class TaskListWidget(QWidget):
 
         del jsonFile
 
+    def load(self, pathFile: str) -> None:
+        """Load tasks
+
+        Args:
+            pathFile (str): Path to the file to load
+        """
+        # TODO Debug
+        print(f"Load: {pathFile}")
+
+        jsonFile = JsonFile()
+        jsonFile.open(pathFile, "r")
+        task_list: dict = jsonFile.read()
+        del jsonFile
+
+        self._setTasks(task_list["task_list"])
+        self.task_log_list.set_tasks(task_list)
+        pass
+
     def _calculateDuration(self) -> None:
         """
         @fn _calculateDuration()
@@ -163,10 +183,10 @@ class TaskListWidget(QWidget):
         for n in range(self.task_table.rowCount()-1):
             item = QTableWidgetItem()
             item.setFlags(QtCore.Qt.ItemIsEditable)
-            starttime = datetime.datetime.strptime(
+            starttime = datetime.strptime(
                 self.task_table.cellWidget(n, 0).text(), "%H:%M"
             )
-            endtime = datetime.datetime.strptime(
+            endtime = datetime.strptime(
                 self.task_table.cellWidget(n+1, 0).text(), "%H:%M"
             )
             duration = endtime - starttime
@@ -179,19 +199,44 @@ class TaskListWidget(QWidget):
         @brief Set examples of task list for debugging.
         """
         for n in range(self.task_table.rowCount()):
-            today = datetime.datetime.combine(datetime.date.today(), datetime.time(9+n, 0, 0))
+            today = datetime.combine(date.today(), time(9+n, 0, 0))
 
             widget = self.task_table.cellWidget(n, 0)
-            # widget.setDateTime(datetime.datetime(2021, 2, 1, 9+n, 0, 0))
             widget.setDateTime(today)
 
             widget2 = self.task_table.cellWidget(n, 2)
             widget2.setCurrentIndex(n % 3 + 1)
 
             item = QTableWidgetItem()
-            # item.setText(str(n) + "th job")
-            item.setText("th job")
+            item.setText(str(n+1) + "th job")
+            # item.setText("th job")
             self.task_table.setItem(n, 4, item)
+
+    def _setTasks(self, task_list: List) -> None:
+        """Set task log list to GUI
+
+        Args:
+            task_list (dict): Task list to set
+        """
+        # Set GUI
+        self.removeTask(self.task_table.rowCount())
+        self.addNewTask(len(task_list))
+
+        # Set value to the cells
+        for n, task in enumerate(task_list):
+            start_time = self.task_table.cellWidget(n, 0)
+            start_time.setDateTime(datetime.strptime(task["start_time"], "%H:%M:%S"))
+
+            ticket_widget = self.task_table.cellWidget(n, 2)
+            ticket_widget.setCurrentIndex(n)
+
+            activity_id = QTableWidgetItem()
+            activity_id.setText(str(task["activity_id"]))
+            self.task_table.setItem(n, 3, activity_id)
+
+            comment_widget = QTableWidgetItem()
+            comment_widget.setText(task["comment"])
+            self.task_table.setItem(n, 4, comment_widget)
 
     def _gather_tasks(self) -> None:
         """

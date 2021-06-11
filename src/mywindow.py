@@ -74,8 +74,7 @@ class MyWindow(QMainWindow):
         # Select file path to load
         savefile = QFileDialog.getOpenFileName(self, "Load save file")
 
-        # TODO Debug
-        print(f"Load: {savefile}")
+        self.timeKeeper.loadSaveFile(savefile[0])
 
     def openOptionDialog(self) -> None:
         """
@@ -149,6 +148,14 @@ class TimeKeeperWidget(QWidget):
         @brief Assign option parameters.
         """
         self.optionStruct = optionStruct
+
+    def loadSaveFile(self, pathFile: str) -> None:
+        """Load save file
+
+        Args:
+            pathFile (str): Path to the file to load
+        """
+        self.task_list.load(pathFile)
 
     def _submitTaskList(self) -> None:
         """
