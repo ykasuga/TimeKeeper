@@ -9,7 +9,7 @@
 from PyQt5.QtWidgets import QMainWindow, QAction, QWidget, qApp
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QMessageBox, QDialog
+from PyQt5.QtWidgets import QMessageBox, QDialog, QFileDialog
 
 from src.task_list_widget import TaskListWidget
 from src.time_keeper_option import TimeKeeperOption, OptionStruct
@@ -45,6 +45,11 @@ class MyWindow(QMainWindow):
         self.setGeometry(0, 0, self.width, self.height)
         self.show()
 
+        loadAction = QAction("&Load", self)
+        loadAction.setShortcut("Ctrl+L")
+        loadAction.setStatusTip("Load save file")
+        loadAction.triggered.connect(lambda: self.loadSaveFile())
+
         optionAction = QAction("&Option", self)
         optionAction.setShortcut("Ctrl+O")
         optionAction.setStatusTip("Open Option Dialog")
@@ -57,10 +62,20 @@ class MyWindow(QMainWindow):
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu("&File")
+        fileMenu.addAction(loadAction)
         fileMenu.addAction(optionAction)
         fileMenu.addAction(exitAction)
 
         self.setCentralWidget(self.timeKeeper)
+
+    def loadSaveFile(self) -> None:
+        """Load save file
+        """
+        # Select file path to load
+        savefile = QFileDialog.getOpenFileName(self, "Load save file")
+
+        # TODO Debug
+        print(f"Load: {savefile}")
 
     def openOptionDialog(self) -> None:
         """
