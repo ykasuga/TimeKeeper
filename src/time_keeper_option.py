@@ -6,8 +6,6 @@
 @brief Option of TimeKeeper.
 """
 
-import os
-
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QFormLayout

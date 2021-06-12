@@ -8,7 +8,7 @@
 from src.task_log_list import TaskLogList
 
 import unittest
-from datetime import datetime
+from PyQt5.QtCore import QTime
 
 from src.redmine_entry import timedelta_to_hour
 from src.task_log import TaskLog
@@ -19,10 +19,10 @@ class TestTaskLogList(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        self.new_task1 = TaskLog(1, datetime(2021, 1, 1, 11, 34, 56), 101, "New task1")
-        self.new_task2 = TaskLog(2, datetime(2021, 1, 1, 12, 34, 56), 102, "New task2")
-        self.new_task3 = TaskLog(3, datetime(2021, 1, 1, 13, 34, 56), 103, "New task3")
-        self.close_time = datetime(2021, 1, 1, 17, 30)
+        self.new_task1 = TaskLog(1, QTime(11, 34, 56), 101, "New task1")
+        self.new_task2 = TaskLog(2, QTime(12, 34, 56), 102, "New task2")
+        self.new_task3 = TaskLog(3, QTime(13, 34, 56), 103, "New task3")
+        self.close_time = QTime(17, 30, 0)
         return super().setUp()
 
     def tearDown(self) -> None:

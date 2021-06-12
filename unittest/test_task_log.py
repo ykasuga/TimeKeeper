@@ -11,17 +11,18 @@ import unittest
 from datetime import datetime
 import sys
 from io import StringIO
+from PyQt5.QtCore import QTime
 
 
 class TestTaskLog(unittest.TestCase):
     """Test case for TaskLog class
     """
     def setUp(self) -> None:
-        self._task1_datetime = datetime(2021, 5, 23, 9, 0, 0)
-        self.task1 = TaskLog(1, self._task1_datetime, 1, "comment1")
-        self.task2 = TaskLog(2, datetime(2021, 5, 23, 10, 0, 0), 2, "comment2")
-        self.task3 = TaskLog(3, datetime(2021, 5, 23, 11, 0, 0), 1, "comment1")
-        self.task4 = TaskLog(4, datetime(2021, 5, 23, 12, 0, 0), 1, "comment1.2")
+        self._task1_time = QTime(9, 0, 0)
+        self.task1 = TaskLog(1, self._task1_time, 1, "comment1")
+        self.task2 = TaskLog(2, QTime(10, 0, 0), 2, "comment2")
+        self.task3 = TaskLog(3, QTime(11, 0, 0), 1, "comment1")
+        self.task4 = TaskLog(4, QTime(12, 0, 0), 1, "comment1.2")
 
         self.task1.logged_time = 1
         self.task2.logged_time = 1
@@ -54,13 +55,13 @@ class TestTaskLog(unittest.TestCase):
         """Test start_time() method
         """
         actual = self.task1.start_time
-        self.assertEqual(self._task1_datetime, actual)
+        self.assertEqual(self._task1_time, actual)
 
     def test_show(self) -> None:
         """Test sho() method
         """
         self.task1.show()
-        actual = f"1 : {self._task1_datetime.strftime('%Y-%m-%d %H:%M:%S')} 1 1 comment1\n"
+        actual = f"1 : {self._task1_time.toString('%H:%M:%S')} 1 1 comment1\n"
         self.assertEqual(sys.stdout.getvalue(), actual)
 
     def test_is_end_of_day(self) -> None:

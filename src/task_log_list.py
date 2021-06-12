@@ -6,8 +6,9 @@
 @brief Definition of TaskLogList class.
 """
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
+from PyQt5.QtCore import QTime
 
 from src.task_log import TaskLog
 from src.redmine_entry import timedelta_to_hour
@@ -22,7 +23,7 @@ class TaskLogList():
         self.tasks = []
         self.tasks_sorted = []
 
-    def append_new(self, start_time: datetime, ticket_number: int, comment: str) -> bool:
+    def append_new(self, start_time: QTime, ticket_number: int, comment: str) -> bool:
         """
         @fn append_new
         @brief Append new task log to the list.
@@ -39,19 +40,19 @@ class TaskLogList():
 
         if self.tasks and self.tasks[-1].start_time > start_time:
             print("Please specify valid start_time: {} > {}".format(
-                self.tasks[-1].start_time.strftime("%Y-%m-%d %H:%M:%S"),
-                start_time.strftime("%Y-%m-%d %H:%M:%S")
+                self.tasks[-1].start_time.strftime("%H:%M:%S"),
+                start_time.strftime("%H:%M:%S")
             ))
             return False
 
         self.tasks.append(TaskLog(len(self.tasks), start_time, ticket_number, comment))
         return True
 
-    def insert_new(self, start_time: datetime, ticket_number: int, comment: str) -> bool:
+    def insert_new(self, start_time: QTime, ticket_number: int, comment: str) -> bool:
         """
         @fn insert_new
         @brief Insert new task before existing tasks.
-        @param start_time Star time of the new task.
+        @param start_time Start time of the new task.
         @param ticket_number Ticket number of the new task.
         @param comment Comment for the new task.
         @return Succeeded or not.
@@ -85,7 +86,7 @@ class TaskLogList():
         
         return True
 
-    def close_day(self, time: datetime) -> bool:
+    def close_day(self, time: QTime) -> bool:
         """
         @fn close_day
         @brief Close the day.
@@ -141,7 +142,7 @@ class TaskLogList():
         @brief Calculate logged time of every task.
         """
         for n in range(len(self.tasks) - 1):
-            self.tasks[n].logged_time = self.tasks[n+1].start_time - self.tasks[n].start_time
+            self.tasks[n].logged_time = timedelta(seconds=self.tasks[n].start_time.secsTo(self.tasks[n+1].start_time))
 
     def sort(self) -> None:
         """
@@ -212,7 +213,7 @@ class TaskLogList():
         key_date = "date"
         key_task = "task_list"
         task_dict = {
-            key_date: datetime.today().strftime("%Y-%m-%d"),
+            key_date: datetime.today().strftime("%Y-%m-%d"),   # TODO : get today
             key_task: []
         }
 
@@ -224,7 +225,7 @@ class TaskLogList():
         for task in self.tasks:
             task_dict[key_task].append(
                 {
-                    key_star_time: task.start_time.strftime("%H:%M:%S"),
+                    key_star_time: task.start_time.toString("%H:%M:%S"),
                     key_ticket_id: task.ticket_number,
                     key_activity_id: task.activity_id,
                     key_comment: task.comment

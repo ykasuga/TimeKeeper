@@ -6,10 +6,11 @@
 @brief Definition of TaskListWidget class
 """
 
-from datetime import datetime, date, time
+from datetime import time, timedelta
 from typing import List
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QTableWidgetItem, QWidget
+from PyQt5.QtCore import QTime
+from PyQt5.QtWidgets import QTableWidgetItem, QTimeEdit, QWidget
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QTableWidget, QComboBox, QLineEdit, QCompleter, QDateTimeEdit
 from PyQt5.QtWidgets import QMessageBox
@@ -72,10 +73,10 @@ class TaskListWidget(QWidget):
         @brief Generate a new task line in UI.
         """
         # Start Time
-        dateTimeEdit = QDateTimeEdit()
+        dateTimeEdit = QTimeEdit()
         dateTimeEdit.setDisplayFormat("h:m")
         dateTimeEdit.setFrame(False)
-        dateTimeEdit.setDateTime(datetime.today())
+        dateTimeEdit.setTime(QTime.currentTime())
         dateTimeEdit.dateTimeChanged.connect(lambda: self._calculateDuration())
         self.task_table.setCellWidget(row, 0, dateTimeEdit)
 
@@ -113,7 +114,7 @@ class TaskListWidget(QWidget):
         self.save()
 
         # Close the day
-        self.task_log_list.close_day(datetime.today())
+        self.task_log_list.close_day(QTime.currentTime())
         tasks_sorted = self.task_log_list.get_tasks_sorted()
 
         # Confirmation dialog
@@ -171,8 +172,7 @@ class TaskListWidget(QWidget):
         task_list: dict = jsonFile.read()
         del jsonFile
 
-        self._setTasks(task_list["task_list"])
-        self.task_log_list.set_tasks(task_list)
+        self._setTasks(task_list)
         pass
 
     def _calculateDuration(self) -> None:
@@ -183,13 +183,11 @@ class TaskListWidget(QWidget):
         for n in range(self.task_table.rowCount()-1):
             item = QTableWidgetItem()
             item.setFlags(QtCore.Qt.ItemIsEditable)
-            starttime = datetime.strptime(
-                self.task_table.cellWidget(n, 0).text(), "%H:%M"
-            )
-            endtime = datetime.strptime(
-                self.task_table.cellWidget(n+1, 0).text(), "%H:%M"
-            )
-            duration = endtime - starttime
+
+            starttime = self.task_table.cellWidget(n, 0).time()
+            endtime = self.task_table.cellWidget(n+1, 0).time()
+
+            duration = timedelta(seconds=starttime.secsTo(endtime))
             item.setText(":".join(str(duration).split(":")[:2]))
             self.task_table.setItem(n, 1, item)
 
@@ -199,36 +197,36 @@ class TaskListWidget(QWidget):
         @brief Set examples of task list for debugging.
         """
         for n in range(self.task_table.rowCount()):
-            today = datetime.combine(date.today(), time(9+n, 0, 0))
-
             widget = self.task_table.cellWidget(n, 0)
-            widget.setDateTime(today)
+            widget.setTime(time(9+n, 0, 0))
 
             widget2 = self.task_table.cellWidget(n, 2)
             widget2.setCurrentIndex(n % 3 + 1)
 
             item = QTableWidgetItem()
             item.setText(str(n+1) + "th job")
-            # item.setText("th job")
             self.task_table.setItem(n, 4, item)
 
-    def _setTasks(self, task_list: List) -> None:
+    def _setTasks(self, task_list: dict) -> None:
         """Set task log list to GUI
 
         Args:
             task_list (dict): Task list to set
         """
+        # Set TaskLogList
+        self.task_log_list.set_tasks(task_list)
+
         # Set GUI
         self.removeTask(self.task_table.rowCount())
-        self.addNewTask(len(task_list))
+        self.addNewTask(len(task_list["task_list"]))
 
         # Set value to the cells
-        for n, task in enumerate(task_list):
+        for n, task in enumerate(task_list["task_list"]):
             start_time = self.task_table.cellWidget(n, 0)
-            start_time.setDateTime(datetime.strptime(task["start_time"], "%H:%M:%S"))
+            start_time.setDateTime(task["start_time"].toString("%H:%M:%S"))
 
             ticket_widget = self.task_table.cellWidget(n, 2)
-            ticket_widget.setCurrentIndex(n)
+            ticket_widget.setCurrentText(str(task["ticket_id"]))
 
             activity_id = QTableWidgetItem()
             activity_id.setText(str(task["activity_id"]))
@@ -248,7 +246,8 @@ class TaskListWidget(QWidget):
         self.task_log_list.clear()
 
         for n in range(num_tasks):
-            starttime = self.task_table.cellWidget(n, 0).dateTime().toPyDateTime()
+            # starttime = self.task_table.cellWidget(n, 0).dateTime().toPyDateTime()
+            starttime = self.task_table.cellWidget(n, 0).time()
             # TODO : check if ticket number is valid
             ticket_str = self.task_table.cellWidget(n, 2).currentText()
             try:

@@ -6,7 +6,8 @@
 @brief Definition of TaskLog class.
 """
 
-from datetime import datetime, timedelta
+from datetime import timedelta
+from PyQt5.QtCore import QTime
 
 
 class TaskLog():
@@ -14,7 +15,7 @@ class TaskLog():
     @class TaskLog
     @brief Set of parameters of a task
     """
-    def __init__(self, id: int, start_time: datetime,
+    def __init__(self, id: int, start_time: QTime,
         ticket_number: int=0, comment: str="EndOfDay") -> None:
         """
         @fn __init__
@@ -26,7 +27,7 @@ class TaskLog():
         @return None
         """
         self.id = id
-        self._start_time = start_time
+        self._start_time: QTime = start_time
         self.logged_time = timedelta(0.)
         self._ticket_number = ticket_number
         self.activity_id = 1
@@ -47,7 +48,7 @@ class TaskLog():
 
     #=== Properties ===
     @property
-    def start_time(self) -> datetime:
+    def start_time(self) -> QTime:
         return self._start_time
 
     # @start_time.setter
@@ -76,7 +77,7 @@ class TaskLog():
         @return None
         """
         message_callback("{} : {} {} {} {}".format(self.id,
-            self.start_time.strftime("%Y-%m-%d %H:%M:%S"),
+            self.start_time.toString("%H:%M:%S"),
             self.logged_time, self.ticket_number, self.comment
             ))
 
