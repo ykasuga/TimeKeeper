@@ -16,7 +16,6 @@ from PyQt5.QtWidgets import QTableWidget, QComboBox, QLineEdit, QCompleter, QDat
 from PyQt5.QtWidgets import QMessageBox
 
 from src.task_log_list import TaskLogList
-from src.task_log import TaskLog
 from src.time_keeper_option import OptionStruct
 from src.redmine_entry import RedmineEntry
 from src.json_file import JsonFile
@@ -223,7 +222,7 @@ class TaskListWidget(QWidget):
         # Set value to the cells
         for n, task in enumerate(task_list["task_list"]):
             start_time = self.task_table.cellWidget(n, 0)
-            start_time.setDateTime(task["start_time"].toString("%H:%M:%S"))
+            start_time.setTime(QTime.fromString(task["start_time"], "HH:mm:ss"))
 
             ticket_widget = self.task_table.cellWidget(n, 2)
             ticket_widget.setCurrentText(str(task["ticket_id"]))
