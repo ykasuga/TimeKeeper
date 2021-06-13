@@ -45,6 +45,11 @@ class MyWindow(QMainWindow):
         self.setGeometry(0, 0, self.width, self.height)
         self.show()
 
+        saveAction = QAction("&Save", self)
+        saveAction.setShortcut("Ctrl+S")
+        saveAction.setStatusTip("Save task list")
+        saveAction.triggered.connect(lambda: self.saveTasks())
+
         loadAction = QAction("&Load", self)
         loadAction.setShortcut("Ctrl+L")
         loadAction.setStatusTip("Load save file")
@@ -62,17 +67,30 @@ class MyWindow(QMainWindow):
 
         menubar = self.menuBar()
         fileMenu = menubar.addMenu("&File")
+        fileMenu.addAction(saveAction)
         fileMenu.addAction(loadAction)
         fileMenu.addAction(optionAction)
         fileMenu.addAction(exitAction)
 
         self.setCentralWidget(self.timeKeeper)
 
+    def saveTasks(self) -> None:
+        """Save tasks
+        """
+        # Select file path to save
+        savefile = QFileDialog.getSaveFileName(self, "Save file", filter="*.json")
+
+        if not savefile[0]:
+            # If user did not select any file
+            return
+
+        self.timeKeeper.saveTasks(savefile[0])
+
     def loadSaveFile(self) -> None:
         """Load save file
         """
         # Select file path to load
-        savefile = QFileDialog.getOpenFileName(self, "Load save file")
+        savefile = QFileDialog.getOpenFileName(self, "Load save file", filter="*.json")
 
         self.timeKeeper.loadSaveFile(savefile[0])
 
@@ -148,6 +166,14 @@ class TimeKeeperWidget(QWidget):
         @brief Assign option parameters.
         """
         self.optionStruct = optionStruct
+
+    def saveTasks(self, pathFile: str) -> None:
+        """Save tasks
+
+        Args:
+            pathFile (str): Path to the save file
+        """
+        self.task_list.save(pathFile)
 
     def loadSaveFile(self, pathFile: str) -> None:
         """Load save file

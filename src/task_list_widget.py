@@ -142,11 +142,9 @@ class TaskListWidget(QWidget):
 
         return True
 
-    def save(self) -> None:
+    def save(self, path_file) -> None:
         """Save tasks
         """
-        path_file = "savefile.json"
-
         self._gather_tasks()
         self.task_log_list.sort()
 
