@@ -40,8 +40,8 @@ class TaskLogList():
 
         if self.tasks and self.tasks[-1].start_time > start_time:
             print("Please specify valid start_time: {} > {}".format(
-                self.tasks[-1].start_time.strftime("%H:%M:%S"),
-                start_time.strftime("%H:%M:%S")
+                self.tasks[-1].start_time.toString("HH:mm:ss"),
+                start_time.toString("HH:mm:ss")
             ))
             return False
 
@@ -225,7 +225,7 @@ class TaskLogList():
         for task in self.tasks:
             task_dict[key_task].append(
                 {
-                    key_star_time: task.start_time.toString("%H:%M:%S"),
+                    key_star_time: task.start_time.toString("HH:mm:ss"),
                     key_ticket_id: task.ticket_number,
                     key_activity_id: task.activity_id,
                     key_comment: task.comment
