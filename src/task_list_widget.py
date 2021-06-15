@@ -12,7 +12,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import QTime
 from PyQt5.QtWidgets import QTableWidgetItem, QTimeEdit, QWidget
 from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtWidgets import QTableWidget, QComboBox, QLineEdit, QCompleter, QDateTimeEdit
+from PyQt5.QtWidgets import QTableWidget, QComboBox, QLineEdit, QCompleter
 from PyQt5.QtWidgets import QMessageBox
 
 from src.task_log_list import TaskLogList
