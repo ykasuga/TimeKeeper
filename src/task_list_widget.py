@@ -110,7 +110,8 @@ class TaskListWidget(QWidget):
         @brief Submit logged time to the tickets.
         @param optionStruct Specify username, password and today's date.
         """
-        self.save()
+        # TODO need file path
+        # self.save()
 
         # Close the day
         self.task_log_list.close_day(QTime.currentTime())

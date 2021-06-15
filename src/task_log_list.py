@@ -257,7 +257,7 @@ class TaskLogList():
 
         key_task = "task_list"
 
-        key_star_time = "start_time"
+        key_start_time = "start_time"
         key_ticket_id = "ticket_id"
         key_activity_id = "activity_id"
         key_comment = "comment"
@@ -266,7 +266,7 @@ class TaskLogList():
 
         for task in task_list:
             self.append_new(
-                task[key_star_time],
+                QTime.fromString(task[key_start_time]),
                 task[key_ticket_id],
-                task[key_comment]
+                str(task[key_comment])
                 )
