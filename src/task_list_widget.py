@@ -110,8 +110,8 @@ class TaskListWidget(QWidget):
         @brief Submit logged time to the tickets.
         @param optionStruct Specify username, password and today's date.
         """
-        # TODO need file path
-        # self.save()
+        self._gather_tasks()
+        self.task_log_list.sort()
 
         # Close the day
         self.task_log_list.close_day(QTime.currentTime())
@@ -244,8 +244,9 @@ class TaskListWidget(QWidget):
         self.task_log_list.clear()
 
         for n in range(num_tasks):
-            # starttime = self.task_table.cellWidget(n, 0).dateTime().toPyDateTime()
             starttime = self.task_table.cellWidget(n, 0).time()
+            # Set second and ms to 0
+            starttime.setHMS(starttime.hour(), starttime.minute(), 0, 0)
             # TODO : check if ticket number is valid
             ticket_str = self.task_table.cellWidget(n, 2).currentText()
             try:
