@@ -1,3 +1,4 @@
-C:/Users/y-kas/Desktop
-kasuga
-456
+E:\Documents\Workspace\TimeKeeper
+yohei.kasuga
+12345
+E:/Documents/Workspace/TimeKeeper/savefile.json

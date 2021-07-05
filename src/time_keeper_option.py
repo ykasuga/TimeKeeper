@@ -6,7 +6,7 @@
 @brief Option of TimeKeeper.
 """
 
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QFile, pyqtSignal
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QFormLayout
 from PyQt5.QtWidgets import QPushButton, QLabel, QLineEdit, QDateTimeEdit, QFileDialog
@@ -26,6 +26,7 @@ class OptionStruct(object):
         self.username = ""
         self.password = ""
         self.today = QDateTime()
+        self.save_file = ""
 
 
 class TimeKeeperOption(QWidget):
@@ -49,7 +50,8 @@ class TimeKeeperOption(QWidget):
         """
         super().__init__()
         self.userfolder = ""
-        self.savefile = "TimeKeeperOption.txt"
+        self.option_file = "TimeKeeperOption.txt"
+        self._save_file = ""
 
         self.layout_options = QFormLayout(self)
         self._initUI()
@@ -87,6 +89,12 @@ class TimeKeeperOption(QWidget):
         self.edit_today.setDateTime(date.currentDateTime())
         self.layout_options.addRow(self.label_today, self.edit_today)
 
+        # Save file
+        self.button_save_file = QPushButton("Select save file")
+        self.edit_save_file = QLineEdit(self)
+        self.layout_options.addRow(self.button_save_file, self.edit_save_file)
+        self.button_save_file.clicked.connect(lambda: self._selectSaveFile())
+
         # Close button
         self.close_button = QPushButton("Close")
         self.close_button.clicked.connect(self._closeEvent)
@@ -103,6 +111,7 @@ class TimeKeeperOption(QWidget):
         optionStruct.username = self.edit_username.text()
         optionStruct.password = self.edit_password.text()
         optionStruct.today = self.edit_today.text()
+        optionStruct.save_file = self.edit_save_file.text()
 
         return optionStruct
 
@@ -123,6 +132,13 @@ class TimeKeeperOption(QWidget):
         self.userfolder = fileDialog.getExistingDirectory()
         # self.edit_userfolder.setText(self.userfolder)
 
+    def _selectSaveFile(self) -> None:
+        """Select save file path
+        """
+        save_file_dialog = QFileDialog()
+        self._save_file = save_file_dialog.getSaveFileName()[0]
+        self.edit_save_file.setText(self._save_file)
+
     def _loadOption(self) -> None:
         """
         @fn _loadOption
@@ -133,24 +149,34 @@ class TimeKeeperOption(QWidget):
         password = ""
 
         try:
-            with open(self.savefile, "r") as f:
+            with open(self.option_file, "r") as f:
                 lines = [s.strip() for s in f.readlines()]
                 self.userfolder = lines[0]
                 username = lines[1]
                 password = lines[2]
+                self._save_file = lines[3]
         except FileNotFoundError:
             print("No option file found.")
+        except IndexError:
+            pass
         
         # self.edit_userfolder.setText(self.userfolder)
         self.edit_username.setText(username)
         self.edit_password.setText(password)
+        self.edit_save_file.setText(self._save_file)
 
     def _saveOption(self) -> None:
         """
         @fn _saveOption
         @brief Save option parameters from the savefile.
         """
-        with open(self.savefile, "w") as f:
+        with open(self.option_file, "w") as f:
             f.write(self.userfolder + "\n")
             f.write(self.edit_username.text() + "\n")
             f.write(self.edit_password.text() + "\n")
+            f.write(self._save_file + "\n")
+
+    def _setSaveFile(self) -> None:
+        """Set _save_file variable
+        """
+        self._save_file = self.edit_save_file.text()

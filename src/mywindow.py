@@ -74,25 +74,27 @@ class MyWindow(QMainWindow):
 
         self.setCentralWidget(self.timeKeeper)
 
-    def saveTasks(self) -> None:
+    def saveTasks(self, save_file="") -> None:
         """Save tasks
         """
-        # Select file path to save
-        savefile = QFileDialog.getSaveFileName(self, "Save file", filter="*.json")
+        save_file = self.optionStruct.save_file
 
-        if not savefile[0]:
+        if not save_file:
             # If user did not select any file
             return
 
-        self.timeKeeper.saveTasks(savefile[0])
+        self.timeKeeper.saveTasks(save_file)
 
     def loadSaveFile(self) -> None:
         """Load save file
         """
-        # Select file path to load
-        savefile = QFileDialog.getOpenFileName(self, "Load save file", filter="*.json")
+        save_file = self.optionStruct.save_file
 
-        self.timeKeeper.loadSaveFile(savefile[0])
+        if not save_file:
+            # If user did not select any file
+            return
+
+        self.timeKeeper.loadSaveFile(save_file)
 
     def openOptionDialog(self) -> None:
         """
@@ -134,7 +136,6 @@ class TimeKeeperWidget(QWidget):
         button_remove.clicked.connect(lambda: self.removeTaskSet())
 
         button_submit = QPushButton("Submit")
-        button_submit.setShortcut("Ctrl+S")
         button_submit.clicked.connect(lambda: self._submitTaskList())
 
         self.task_list = TaskListWidget()
