@@ -23,10 +23,11 @@ class OptionStruct(object):
         @fn __init__()
         @brief Constructor of OptionStruct class.
         """
-        self.username = ""
-        self.password = ""
+        self.redmine_server: str = ""
+        self.username: str = ""
+        self.password: str = ""
         self.today = QDateTime()
-        self.save_file = ""
+        self.save_file: str = ""
 
 
 class TimeKeeperOption(QWidget):
@@ -49,6 +50,8 @@ class TimeKeeperOption(QWidget):
         @brief Constructor on TimeKeeperOption class.
         """
         super().__init__()
+
+        self._redmine_server = ""
         self.userfolder = ""
         self.option_file = "TimeKeeperOption.txt"
         self._save_file = ""
@@ -69,6 +72,11 @@ class TimeKeeperOption(QWidget):
         # self.button_userfolder.clicked.connect(lambda: self._selectUserfolder())
         # self.edit_userfolder = QLineEdit(self)
         # self.layout_options.addRow(self.button_userfolder, self.edit_userfolder)
+
+        # Redmine server
+        self.label_redmine_server = QLabel("Redmine server")
+        self.edit_redmine_server = QLineEdit(self)
+        self.layout_options.addRow(self.label_redmine_server, self.edit_redmine_server)
 
         # Username
         self.label_username = QLabel("Username")
@@ -108,6 +116,7 @@ class TimeKeeperOption(QWidget):
         """
         optionStruct = OptionStruct()
 
+        optionStruct.redmine_server = self.edit_redmine_server.text()
         optionStruct.username = self.edit_username.text()
         optionStruct.password = self.edit_password.text()
         optionStruct.today = self.edit_today.text()
@@ -151,16 +160,18 @@ class TimeKeeperOption(QWidget):
         try:
             with open(self.option_file, "r") as f:
                 lines = [s.strip() for s in f.readlines()]
-                self.userfolder = lines[0]
-                username = lines[1]
-                password = lines[2]
-                self._save_file = lines[3]
+                self._redmine_server = lines[0]
+                self.userfolder = lines[1]
+                username = lines[2]
+                password = lines[3]
+                self._save_file = lines[4]
         except FileNotFoundError:
             print("No option file found.")
         except IndexError:
             pass
         
         # self.edit_userfolder.setText(self.userfolder)
+        self.edit_redmine_server.setText(self._redmine_server)
         self.edit_username.setText(username)
         self.edit_password.setText(password)
         self.edit_save_file.setText(self._save_file)
@@ -171,6 +182,7 @@ class TimeKeeperOption(QWidget):
         @brief Save option parameters from the savefile.
         """
         with open(self.option_file, "w") as f:
+            f.write(self.edit_redmine_server.text() + "\n")
             f.write(self.userfolder + "\n")
             f.write(self.edit_username.text() + "\n")
             f.write(self.edit_password.text() + "\n")
