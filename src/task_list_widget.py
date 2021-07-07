@@ -127,7 +127,7 @@ class TaskListWidget(QWidget):
             return False
 
         # Submit tasks to redmine
-        redmine = RedmineEntry("http://redmine03/", 
+        redmine = RedmineEntry(optionStruct.redmine_server, 
             username=optionStruct.username, password=optionStruct.password)
         for task in tasks_sorted:
             redmine.submitTimeEntry(

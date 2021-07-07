@@ -7,6 +7,7 @@
 
 from datetime import datetime, timedelta
 from redminelib import Redmine
+
 from src.timedelta_to_hour import timedelta_to_hour
 
 
@@ -41,9 +42,14 @@ class RedmineEntry(object):
         time_entry.issue_id = ticket_number
         time_entry.spent_on = date
         time_entry.hours = timedelta_to_hour(logged_time)
-        time_entry.activity_id = activity
+        # time_entry.activity_id = activity
         time_entry.comments = comment
-        # time_entry.save()
+        
+        try:
+            time_entry.save()
+        except Exception as e:
+            print(f"Error on RedmineEntry: {e}")
+            return
 
         # TODO : Debug
         print(
