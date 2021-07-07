@@ -119,7 +119,7 @@ class TimeKeeperOption(QWidget):
         optionStruct.redmine_server = self.edit_redmine_server.text()
         optionStruct.username = self.edit_username.text()
         optionStruct.password = self.edit_password.text()
-        optionStruct.today = self.edit_today.text()
+        optionStruct.today = self.edit_today.dateTime()
         optionStruct.save_file = self.edit_save_file.text()
 
         return optionStruct
