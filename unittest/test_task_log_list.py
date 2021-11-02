@@ -100,7 +100,17 @@ class TestTaskLogList(unittest.TestCase):
         self.assertTrue(taskList.remove_task(1))
         self.assertEqual(1, len(taskList.tasks))
 
-    # def test_close_day(self) -> None:
+    def test_close_day(self) -> None:
+        """Test close_day() method
+        """
+        taskList = TaskLogList()
+        self.assertTrue(taskList.close_day(self.close_time))
+
+        # Added ticket with id=0
+        self.assertEqual(0, taskList.tasks[0].ticket_number)
+
+        # Cannot close the day which is already closed
+        self.assertFalse(taskList.close_day(self.close_time))
 
     def test_is_day_closed(self) -> None:
         """Test is_day_closed() method
