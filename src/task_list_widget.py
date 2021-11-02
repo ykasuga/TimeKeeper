@@ -36,7 +36,7 @@ class TaskListWidget(QWidget):
         self.task_log_list = TaskLogList()
 
         # TODO Number of initail task lists
-        initial_row = 2
+        initial_row = 1
 
         # Set horizontal header labels
         labels = ["Start Time", "Duration", "Ticket", "Activity", "Comment"]
@@ -196,7 +196,7 @@ class TaskListWidget(QWidget):
         """
         for n in range(self.task_table.rowCount()):
             widget = self.task_table.cellWidget(n, 0)
-            widget.setTime(time(9+n, 0, 0))
+            # widget.setTime(time(9+n, 0, 0))
 
             widget2 = self.task_table.cellWidget(n, 2)
             widget2.setCurrentIndex(n % 3 + 1)

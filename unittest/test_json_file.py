@@ -9,8 +9,9 @@ from src.json_file import JsonFile
 
 import unittest
 import os
-import json
 from datetime import datetime, time
+from mock import Mock
+
 
 class TestJsonFile(unittest.TestCase):
     """Test case for JsonFile class
