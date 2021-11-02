@@ -100,6 +100,48 @@ class TestTaskLogList(unittest.TestCase):
         self.assertTrue(taskList.remove_task(1))
         self.assertEqual(1, len(taskList.tasks))
 
+    # def test_close_day(self) -> None:
+
+    def test_is_day_closed(self) -> None:
+        """Test is_day_closed() method
+        when it is not closed
+        """
+        taskList = TaskLogList()
+        self.assertTrue(taskList.append_new(
+            self.new_task1.start_time, self.new_task1.ticket_number, self.new_task1.comment
+        ))
+        self.assertFalse(taskList.is_day_closed())
+
+    def test_is_day_closed_no_tasks(self) -> None:
+        """Test is_day_closed() method
+        when it has no tasks
+        """
+        taskList = TaskLogList()
+        self.assertFalse(taskList.is_day_closed())
+
+    def test_is_day_closed_already_closed(self) -> None:
+        """Test is_day_closed() method
+        when it is already closed
+        """
+        taskList = TaskLogList()
+        # Add ticket with id=0, which means the end of the day
+        self.assertTrue(taskList.append_new(
+            self.new_task1.start_time, 0, self.new_task1.comment
+        ))
+        self.assertTrue(taskList.is_day_closed())
+
+    # def test_show_tasks(self) -> None:
+
+    # def test_show_tasks_sorted(self) -> None:
+
+    # def test_calculate_logged_time(self) -> None:
+
+    # def test_sort(self) -> None:
+
+    # def test_clear(self) -> None:
+
+    # def test_get_tasks_sorted(self) -> None:
+
     def test_get_str_tasks_sorted(self) -> None:
         """Test get_str_tasks_sorted() method
         """
@@ -132,6 +174,8 @@ class TestTaskLogList(unittest.TestCase):
 
         self.assertEqual(expected, taskList.get_str_tasks_sorted())
 
+    # def test_get_task_dict(self) -> None:
+
     def test_get_total_time(self) -> None:
         """Test get_total_time() method
         """
@@ -146,6 +190,8 @@ class TestTaskLogList(unittest.TestCase):
         ))
 
         self.assertEqual(1., taskList.get_total_time())
+
+    # def test_set_tasks(self) -> None:
 
 
 if __name__ == "__main__":
