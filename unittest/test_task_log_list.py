@@ -5,6 +5,7 @@
 @date 2021/5/23
 """
 
+import datetime
 from src.task_log_list import TaskLogList
 
 import unittest
@@ -144,7 +145,33 @@ class TestTaskLogList(unittest.TestCase):
 
     # def test_show_tasks_sorted(self) -> None:
 
-    # def test_calculate_logged_time(self) -> None:
+    def test_calculate_logged_time(self) -> None:
+        """Test calculate_logged time() method
+        """
+        taskList = TaskLogList()
+        self.assertTrue(taskList.append_new(
+            self.new_task1.start_time, self.new_task1.ticket_number, self.new_task1.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            self.new_task2.start_time, self.new_task2.ticket_number, self.new_task2.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            self.new_task3.start_time, self.new_task3.ticket_number, self.new_task3.comment
+        ))
+
+        # Close tha day
+        self.assertTrue(taskList.append_new(
+            self.close_time, 0, ""
+        ))
+
+        # Calculate logged time
+        taskList.calculate_logged_time()
+
+        # Assert
+        self.assertEqual(datetime.timedelta(hours=1), taskList.tasks[0].logged_time)
+        self.assertEqual(datetime.timedelta(hours=1), taskList.tasks[1].logged_time)
+        self.assertEqual(datetime.timedelta(hours=3, minutes=55, seconds=4), taskList.tasks[2].logged_time)
+        self.assertEqual(datetime.timedelta(0), taskList.tasks[3].logged_time)
 
     def test_sort(self) -> None:
         """Test sort() method
