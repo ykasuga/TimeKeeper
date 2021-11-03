@@ -146,7 +146,46 @@ class TestTaskLogList(unittest.TestCase):
 
     # def test_calculate_logged_time(self) -> None:
 
-    # def test_sort(self) -> None:
+    def test_sort(self) -> None:
+        """Test sort() method
+        """
+        new_task1 = TaskLog(1, QTime(11, 34, 56), 101, "New task1")
+        new_task2 = TaskLog(2, QTime(12, 34, 56), 102, "New task2")
+        new_task3 = TaskLog(3, QTime(13, 34, 56), 103, "New task3")
+        new_task4 = TaskLog(4, QTime(14, 34, 56), 101, "New task1")
+
+        taskList = TaskLogList()
+        self.assertTrue(taskList.append_new(
+            new_task1.start_time, new_task1.ticket_number, new_task1.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task2.start_time, new_task2.ticket_number, new_task2.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task3.start_time, new_task3.ticket_number, new_task3.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task4.start_time, new_task4.ticket_number, new_task4.comment
+        ))
+
+        # Close tha day
+        self.assertTrue(taskList.append_new(
+            self.close_time, 0, ""
+        ))
+
+        # Sort
+        taskList.sort()
+
+        # Number of sorted tasks
+        self.assertEqual(3, len(taskList.tasks_sorted))
+        # Start time
+        self.assertEqual(new_task1.start_time, taskList.tasks_sorted[0].start_time)
+        self.assertEqual(new_task2.start_time, taskList.tasks_sorted[1].start_time)
+        self.assertEqual(new_task3.start_time, taskList.tasks_sorted[2].start_time)
+        # ticket_number
+        self.assertEqual(new_task1.ticket_number, taskList.tasks_sorted[0].ticket_number)
+        self.assertEqual(new_task2.ticket_number, taskList.tasks_sorted[1].ticket_number)
+        self.assertEqual(new_task3.ticket_number, taskList.tasks_sorted[2].ticket_number)
 
     # def test_clear(self) -> None:
 
