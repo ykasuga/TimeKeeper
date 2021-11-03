@@ -191,9 +191,3 @@ class TimeKeeperWidget(QWidget):
         """
         if not self.task_list.submit(self.optionStruct):
             return
-
-        dialog = QMessageBox()
-        dialog.setGeometry(500, 500, 200, 150)
-        dialog.setText("Submit today's your whole task sets.\nGood job!")
-        dialog.exec_()
-
