@@ -214,6 +214,37 @@ class TestTaskLogList(unittest.TestCase):
         self.assertEqual(new_task2.ticket_number, taskList.tasks_sorted[1].ticket_number)
         self.assertEqual(new_task3.ticket_number, taskList.tasks_sorted[2].ticket_number)
 
+    def test_sort_should_not_change_original_tasks(self) -> None:
+        """Test sort() method
+        that it should not change original task list (tasks)
+        """
+        new_task1 = TaskLog(1, QTime(11, 34, 56), 101, "New task1")
+        new_task2 = TaskLog(2, QTime(12, 34, 56), 102, "New task2")
+        new_task3 = TaskLog(3, QTime(13, 34, 56), 103, "New task3")
+        new_task4 = TaskLog(4, QTime(14, 34, 56), 101, "New task1")
+
+        taskList = TaskLogList()
+        self.assertTrue(taskList.append_new(
+            new_task1.start_time, new_task1.ticket_number, new_task1.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task2.start_time, new_task2.ticket_number, new_task2.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task3.start_time, new_task3.ticket_number, new_task3.comment
+        ))
+        self.assertTrue(taskList.append_new(
+            new_task4.start_time, new_task4.ticket_number, new_task4.comment
+        ))
+
+        taskList.close_day(self.close_time)
+        
+        # Assert logged_time
+        self.assertEqual(datetime.timedelta(hours=1), taskList.tasks[0].logged_time)
+        self.assertEqual(datetime.timedelta(hours=1), taskList.tasks[1].logged_time)
+        self.assertEqual(datetime.timedelta(hours=1), taskList.tasks[2].logged_time)
+        self.assertEqual(datetime.timedelta(hours=2, minutes=55, seconds=4), taskList.tasks[3].logged_time)
+
     # def test_clear(self) -> None:
 
     # def test_get_tasks_sorted(self) -> None:
