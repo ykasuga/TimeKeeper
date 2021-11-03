@@ -111,11 +111,9 @@ class TaskListWidget(QWidget):
         @param optionStruct Specify username, password and today's date.
         """
         self._gather_tasks()
-        self.task_log_list.sort()
 
         # Close the day
         self.task_log_list.close_day(QTime.currentTime())
-        tasks_sorted = self.task_log_list.get_tasks_sorted()
 
         # Confirmation dialog
         diag_confirm = QMessageBox()
@@ -127,6 +125,7 @@ class TaskListWidget(QWidget):
             return False
 
         # Submit tasks to redmine
+        tasks_sorted = self.task_log_list.get_tasks_sorted()
         redmine = RedmineEntry(optionStruct.redmine_server, 
             username=optionStruct.username, password=optionStruct.password)
         for task in tasks_sorted:
