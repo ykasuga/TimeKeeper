@@ -8,6 +8,7 @@
 
 from datetime import datetime, timedelta
 from typing import List
+import copy
 from PyQt5.QtCore import QTime
 
 from src.task_log import TaskLog
@@ -149,7 +150,8 @@ class TaskLogList():
         @fn sort
         @brief Sort tasks in order of ticket id.
         """
-        self.tasks_sorted = sorted(self.tasks)
+        self.tasks_sorted = copy.deepcopy(self.tasks)
+        self.tasks_sorted.sort()
         
         n = 0
         while n < len(self.tasks_sorted) - 1:
