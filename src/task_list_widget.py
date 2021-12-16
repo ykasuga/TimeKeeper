@@ -6,7 +6,7 @@
 @brief Definition of TaskListWidget class
 """
 
-from datetime import time, timedelta
+from datetime import timedelta
 from typing import List
 from PyQt5 import QtCore
 from PyQt5.QtCore import QTime
