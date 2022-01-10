@@ -19,7 +19,7 @@ class TestJsonFile(unittest.TestCase):
 
     def setUp(self) -> None:
         # Directory of test data
-        self.test_dir = "unittest/data"
+        self.test_dir = "tests/data"
         return super().setUp()
 
     def test_open(self):
